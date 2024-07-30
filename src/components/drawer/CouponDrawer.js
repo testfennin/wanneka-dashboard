@@ -1,17 +1,5 @@
-import { Input } from "@windmill/react-ui";
-import DrawerButton from "components/form/DrawerButton";
-import Error from "components/form/Error";
-import InputArea from "components/form/InputArea";
-import InputValue from "components/form/InputValue";
 import LabelArea from "components/form/LabelArea";
-import SwitchToggle from "components/form/SwitchToggle";
-import SwitchToggleFour from "components/form/SwitchToggleFour";
-import Title from "components/form/Title";
-import Uploader from "components/image-uploader/Uploader";
-import useCouponSubmit from "hooks/useCouponSubmit";
-import { t } from "i18next";
-import { Scrollbars } from "react-custom-scrollbars-2";
-import { FormHeader, FormInputs, FormSection, Container } from "./ProductDrawer";
+import { FormInputs, FormSection, Container } from "./ProductDrawer";
 import { useEffect, useState } from "react";
 import CouponServices from "services/CouponServices";
 
@@ -32,6 +20,7 @@ const CouponDrawer = ({ id, close,data, fetchData }) => {
         return {...prev, status: data.status === 'active'?true:false}
       })
     }
+    // eslint-disable-next-line
   }, [data])
 
   const handleSubmit =async (e) => {

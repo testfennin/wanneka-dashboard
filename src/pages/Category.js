@@ -36,9 +36,9 @@ import ModalWrapper from "components/common/ModalWrapper";
 import BulkUpdateCategory from "components/category/BulkUpdate";
 
 const Category = () => {
-  const { toggleDrawer, lang } = useContext(SidebarContext);
+  const { lang } = useContext(SidebarContext);
   const [data, setData] = useState({})
-  const [loading, setLoading] = useState(false)
+  const [loading, ] = useState(false)
 
   const fetchData = (page, params) => {
     CategoryServices.getAllCategories(page||0, params)
@@ -65,9 +65,7 @@ const Category = () => {
     categoryRef,
     totalResults,
     resultsPerPage,
-    dataTable,
     serviceData,
-    handleChangePage,
     filename,
     isDisabled,
     handleSelectFile,

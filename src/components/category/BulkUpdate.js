@@ -1,6 +1,5 @@
-import { Container, FormSection } from 'components/drawer/ProductDrawer'
-import LabelArea from 'components/form/LabelArea';
-import React, { useEffect, useState } from 'react'
+import { FormSection } from 'components/drawer/ProductDrawer'
+import React, { useState } from 'react'
 import CategoryServices from 'services/CategoryServices';
 import styled from 'styled-components';
 

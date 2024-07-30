@@ -1,99 +1,41 @@
-import ReactTagInput from "@pathofdev/react-tag-input";
 import {
   Button,
-  Input,
-  TableCell,
-  TableContainer,
-  TableHeader,
-  Textarea,
-  Table,
 } from "@windmill/react-ui";
-import Multiselect from "multiselect-react-dropdown";
 import React, { useEffect, useRef, useState } from "react";
-import { Scrollbars } from "react-custom-scrollbars-2";
 import { MultiSelect } from "react-multi-select-component";
-import { Modal } from "react-responsive-modal";
 import "react-responsive-modal/styles.css";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { FiX } from "react-icons/fi";
 import useProductSubmit from "hooks/useProductSubmit";
-import UploaderThree from "components/image-uploader/UploaderThree";
-import Title from "components/form/Title";
 import SwitchToggleForCombination from "components/form/SwitchToggleForCombination";
 import ActiveButton from "components/form/ActiveButton";
 import LabelArea from "components/form/LabelArea";
 import Error from "components/form/Error";
-import Uploader from "components/image-uploader/Uploader";
-import InputArea from "components/form/InputArea";
-import ParentCategory from "components/category/ParentCategory";
-import InputValue from "components/form/InputValue";
-import InputValueFive from "components/form/InputValueFive";
 import AttributeOptionTwo from "components/attribute/AttributeOptionTwo";
-import DrawerButton from "components/form/DrawerButton";
-import AttributeListTable from "components/attribute/AttributeListTable";
 import { showingTranslateValue } from "utils/translate";
-import ImageDropzone from "components/form/DragDrop";
 import CategoryServices from "services/CategoryServices";
 import styled from "styled-components";
-import axiosInstance from "utils/axios";
-import { baseUrl } from "services/AdminServices";
 import ProductServices from "services/ProductServices";
 import TextEditor from "components/common/TextEditor";
 
-//internal import
-
-function stripHtmlTags(str) {
-  const doc = new DOMParser().parseFromString(str, 'text/html');
-  return doc.body.textContent || "";
-}
 
 const ProductDrawer = ({ id, close, fetchData }) => {
   const { t } = useTranslation();
   const {
-    tag,
-    setTag,
     values,
     language,
-    register,
-    onSubmit,
     errors,
-    slug,
-    openModal,
     attribue,
     setValues,
-    variants,
-    imageUrl,
-    setImageUrl,
-    handleSubmit,
     isCombination,
     variantTitle,
     attributes,
     attTitle,
     handleAddAtt,
-    // productId,
-    onCloseModal,
-    isBulkUpdate,
-    globalSetting,
-    isSubmitting,
     tapValue,
-    setTapValue,
-    resetRefTwo,
-    handleSkuBarcode,
     handleProductTap,
-    selectedCategory,
-    setSelectedCategory,
-    setDefaultCategory,
-    defaultCategory,
-    handleProductSlug,
-    handleSelectLanguage,
     handleIsCombination,
-    handleEditVariant,
-    handleRemoveVariant,
     handleClearVariant,
-    handleQuantityPrice,
-    handleSelectImage,
-    handleSelectInlineImage,
     handleGenerateCombination,
   } = useProductSubmit(id);
   const containerRef = useRef(null);
@@ -122,7 +64,6 @@ const ProductDrawer = ({ id, close, fetchData }) => {
     "content": "",
     "styles": []
   });
-  const [images, setImages] = useState([])
   const [classicImg, setClassicImg] = useState('')
   const [thumbnail, setThumbnail] = useState('')
   const [moreDetails, setMoreDetails] = useState(false)
@@ -195,6 +136,7 @@ const ProductDrawer = ({ id, close, fetchData }) => {
     setMoreDetails(id?true:false)
     getCategories();
     getStyles();
+    // eslint-disable-next-line
   },[]);
 
 
@@ -499,7 +441,7 @@ const ProductDrawer = ({ id, close, fetchData }) => {
                     <div className="w-full my-3 mb-6 flex md:flex-row flex-col">
                       <ClassicImage className="mr-4 bg-gray-300 relative rounded-xl flex justify-center items-center overflow-hidden">
                         {
-                          classicImg ? <img src={classicImg||details.image} className="w-full h-full object-cover"/> :
+                          classicImg ? <img src={classicImg||details.image} alt="product" className="w-full h-full object-cover"/> :
                           <i className="fa fa-camera text-4xl"></i>
                         }
                         <input type="file" onChange={e=>handleImageChange(e)} name="" id="" className="w-full h-full absolute opacity-0" />

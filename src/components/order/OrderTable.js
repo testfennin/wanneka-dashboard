@@ -6,7 +6,6 @@ import Tooltip from "components/tooltip/Tooltip";
 import { useTranslation } from "react-i18next";
 import { FiZoomIn } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import { showDateTimeFormat } from "utils/dateFormate";
 
 const OrderTable = ({ orders, currency, globalSetting, fetchData }) => {
   // console.log('globalSetting',globalSetting)

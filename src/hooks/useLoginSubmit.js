@@ -6,7 +6,6 @@ import { AdminContext } from 'context/AdminContext';
 import AdminServices, { baseUrl } from 'services/AdminServices';
 import { notifyError, notifySuccess } from 'utils/toast';
 import axios from 'axios';
-import axiosInstance from 'utils/axios';
 import session from 'utils/Session';
 
 const useLoginSubmit = () => {

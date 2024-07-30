@@ -6,24 +6,18 @@ import {
   TableRow,
 } from "@windmill/react-ui";
 import ModalWrapper from "components/common/ModalWrapper";
-import MainDrawer from "components/drawer/MainDrawer";
 import ProductDrawer from "components/drawer/ProductDrawer";
 import CheckBox from "components/form/CheckBox";
 import DeleteModal from "components/modal/DeleteModal";
-import EditDeleteButton from "components/table/EditDeleteButton";
 import ShowHideButton from "components/table/ShowHideButton";
-import Tooltip from "components/tooltip/Tooltip";
 import useToggleDrawer from "hooks/useToggleDrawer";
-import { t } from "i18next";
 import { useState } from "react";
-import { FiZoomIn } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import { showingTranslateValue } from "utils/translate";
 
 //internal import
 
 const ProductTable = ({ products, isCheck, setIsCheck, currency, lang, fetchData }) => {
-  const { title, serviceId, handleModalOpen, handleUpdate } = useToggleDrawer();
+  const { title,  } = useToggleDrawer();
 
   const handleClick = (e) => {
     const { id, checked } = e.target;

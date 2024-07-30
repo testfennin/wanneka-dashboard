@@ -284,6 +284,7 @@ const useFilter = (data) => {
     }
 
     return services;
+    // eslint-disable-next-line
   }, [
     time,
     data,

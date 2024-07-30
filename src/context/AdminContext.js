@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import React, { createContext, useReducer } from 'react';
 import session from 'utils/Session';
 

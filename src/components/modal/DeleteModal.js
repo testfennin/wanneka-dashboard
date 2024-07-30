@@ -1,4 +1,4 @@
-import { Button, Modal, ModalBody, ModalFooter } from "@windmill/react-ui";
+import { Button } from "@windmill/react-ui";
 import React, { useContext } from "react";
 import { FiTrash2 } from "react-icons/fi";
 import { useLocation } from "react-router-dom";
@@ -21,7 +21,7 @@ import CurrencyServices from "services/CurrencyServices";
 import { notifyError, notifySuccess } from "utils/toast";
 
 const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId, close, fetchData }) => {
-  const { isModalOpen, closeModal, setIsUpdate } = useContext(SidebarContext);
+  const { closeModal, setIsUpdate } = useContext(SidebarContext);
   const { setServiceId } = useToggleDrawer();
   const location = useLocation();
 

@@ -7,7 +7,6 @@ import { notifyError } from 'utils/toast';
 
 function AddGallery({close, fetchData, product, }) {
 
-    const [images, setImages] = useState([]);
     const [details, setDetails] = useState({
         type: 'image',
         file: '',

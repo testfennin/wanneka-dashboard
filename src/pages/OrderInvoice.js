@@ -29,7 +29,6 @@ const OrderInvoice = () => {
   const params = useParams();
   const { t } = useTranslation();
   const { mode } = useContext(WindmillContext);
-  const { id } = useParams();
   const printRef = useRef();
 
   const loading = false;
@@ -49,6 +48,7 @@ const OrderInvoice = () => {
 
   useEffect(()=>{
     fetchData();
+    // eslint-disable-next-line
   },[])
 
 

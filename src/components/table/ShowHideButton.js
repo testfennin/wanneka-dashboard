@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import Switch from "react-switch";
 import { useLocation } from "react-router-dom";
 
 //internal import

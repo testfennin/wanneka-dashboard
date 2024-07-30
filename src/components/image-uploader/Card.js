@@ -51,7 +51,7 @@ const Card = ({ id, image, index, moveCard, handleRemoveImage }) => {
       item.index = hoverIndex;
     },
   });
-  const [{}, drag] = useDrag({
+  const [drag] = useDrag({
     type: ItemTypes.CARD,
     item: () => {
       return { id, index };

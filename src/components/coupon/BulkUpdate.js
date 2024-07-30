@@ -2,7 +2,6 @@ import { Container, FormSection } from 'components/drawer/ProductDrawer';
 import LabelArea from 'components/form/LabelArea';
 import React, { useState } from 'react'
 import CouponServices from 'services/CouponServices';
-import styled from 'styled-components';
 
 function BulkUpdateCoupon({close, fetchData, ids, setIsCheck}) {
   const [details, setDetails] = useState({
@@ -101,9 +100,5 @@ function BulkUpdateCoupon({close, fetchData, ids, setIsCheck}) {
 
     </Container>
 }
-
-const MainContainer = styled.div`
-    width: 500px
-`
 
 export default BulkUpdateCoupon

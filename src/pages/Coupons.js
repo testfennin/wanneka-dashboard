@@ -16,7 +16,6 @@ import { FiEdit, FiPlus, FiTrash2 } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 import { SidebarContext } from "context/SidebarContext";
 import CouponServices from "services/CouponServices";
-import useAsync from "hooks/useAsync";
 import useToggleDrawer from "hooks/useToggleDrawer";
 import useFilter from "hooks/useFilter";
 import PageTitle from "components/Typography/PageTitle";
@@ -33,18 +32,21 @@ import ModalWrapper from "components/common/ModalWrapper";
 import BulkUpdateCoupon from "components/coupon/BulkUpdate";
 
 const Coupons = () => {
-  const { toggleDrawer, lang } = useContext(SidebarContext);
+  const {  lang } = useContext(SidebarContext);
 
   const [data, setData] = useState({})
   const [loading, setLoading] = useState(false)
   // const { data, loading } = useAsync(CouponServices.getAllCoupons);
 
   const fetchData = (page, params) => {
+    setLoading(true)
     CouponServices.getAllCoupons(page||0, params)
     .then(res=>{
+      setLoading(false)
       console.log(res)
       setData(res.data)
     }).catch(err=>{
+      setLoading(false)
       console.log(err)
     })
   }
@@ -61,11 +63,9 @@ const Coupons = () => {
   const {
     handleSubmitCoupon,
     couponRef,
-    dataTable,
     serviceData,
     totalResults,
     resultsPerPage,
-    handleChangePage,
     handleSelectFile,
     filename,
     isDisabled,

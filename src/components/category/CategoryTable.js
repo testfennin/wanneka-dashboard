@@ -1,8 +1,6 @@
-import { Avatar, TableBody, TableCell, TableRow } from "@windmill/react-ui";
-import { Link } from "react-router-dom";
+import { TableBody, TableCell, TableRow } from "@windmill/react-ui";
 
 //internal import
-import { IoRemoveSharp } from "react-icons/io5";
 import useToggleDrawer from "hooks/useToggleDrawer";
 import DeleteModal from "components/modal/DeleteModal";
 import MainDrawer from "components/drawer/MainDrawer";
@@ -10,7 +8,6 @@ import CategoryDrawer from "components/drawer/CategoryDrawer";
 import CheckBox from "components/form/CheckBox";
 import ShowHideButton from "components/table/ShowHideButton";
 import EditDeleteButton from "components/table/EditDeleteButton";
-import { showingTranslateValue } from "utils/translate";
 import { useState } from "react";
 import ModalWrapper from "components/common/ModalWrapper";
 
@@ -23,7 +20,7 @@ const CategoryTable = ({
   showChild,
   fetchData,
 }) => {
-  const { title, serviceId, handleModalOpen, handleUpdate } = useToggleDrawer();
+  const { title, serviceId } = useToggleDrawer();
 
   const handleClick = (e) => {
     const { id, checked } = e.target;

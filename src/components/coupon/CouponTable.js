@@ -1,33 +1,25 @@
 import {
-  Avatar,
-  Badge,
   TableBody,
   TableCell,
   TableRow,
 } from "@windmill/react-ui";
-import * as dayjs from "dayjs";
+// import * as dayjs from "dayjs";
 
 //internal import
 
 import { useEffect } from "react";
 import { useState } from "react";
 import useToggleDrawer from "hooks/useToggleDrawer";
-import useAsync from "hooks/useAsync";
-import SettingServices from "services/SettingServices";
 import DeleteModal from "components/modal/DeleteModal";
-import MainDrawer from "components/drawer/MainDrawer";
 import CouponDrawer from "components/drawer/CouponDrawer";
 import CheckBox from "components/form/CheckBox";
 import ShowHideButton from "components/table/ShowHideButton";
 import EditDeleteButton from "components/table/EditDeleteButton";
 import { showingTranslateValue } from "utils/translate";
-import { showDateFormat } from "utils/dateFormate";
 import ModalWrapper from "components/common/ModalWrapper";
-import CouponServices from "services/CouponServices";
 
 const CouponTable = ({ lang, isCheck, coupons, setIsCheck, fetchData }) => {
-  const { title, serviceId, handleModalOpen, handleUpdate } = useToggleDrawer();
-  const { data: globalSetting } = useAsync(SettingServices.getGlobalSetting);
+  const { title, } = useToggleDrawer();
 
   const handleClick = (e) => {
     const { id, checked } = e.target;
@@ -44,6 +36,7 @@ const CouponTable = ({ lang, isCheck, coupons, setIsCheck, fetchData }) => {
 
   useEffect(()=>{
     console.log(coupons)
+    // eslint-disable-next-line
   },[])
 
   return (

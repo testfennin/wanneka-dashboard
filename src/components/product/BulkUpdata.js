@@ -1,4 +1,4 @@
-import { Container, FormHeader, FormInputs, FormSection } from 'components/drawer/ProductDrawer'
+import { Container, FormSection } from 'components/drawer/ProductDrawer'
 import LabelArea from 'components/form/LabelArea';
 import React, { useEffect, useState } from 'react'
 import CategoryServices from 'services/CategoryServices';

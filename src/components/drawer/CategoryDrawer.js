@@ -1,120 +1,22 @@
-import { Input } from "@windmill/react-ui";
-import DrawerButton from "components/form/DrawerButton";
 import Error from "components/form/Error";
-import InputArea from "components/form/InputArea";
 import LabelArea from "components/form/LabelArea";
-import SwitchToggle from "components/form/SwitchToggle";
-import TextAreaCom from "components/form/TextAreaCom";
 import Title from "components/form/Title";
-import Uploader from "components/image-uploader/Uploader";
 import useCategorySubmit from "hooks/useCategorySubmit";
-import Tree from "rc-tree";
 import React, { useEffect, useState } from "react";
-import Scrollbars from "react-custom-scrollbars-2";
 import { useTranslation } from "react-i18next";
 //internal import
-import CategoryServices from "services/CategoryServices";
 import axiosInstance from "utils/axios";
-import { notifyError } from "utils/toast";
-import { showingTranslateValue } from "utils/translate";
 import { FormHeader, FormInputs, FormSection } from "./ProductDrawer";
 
 const CategoryDrawer = ({ id, data, lang, fetchData, close }) => {
   const { t } = useTranslation();
 
   const {
-    checked,
     register,
-    onSubmit,
-    // handleSubmit,
     errors,
-    imageUrl,
-    setImageUrl,
-    published,
-    setPublished,
-    setChecked,
-    selectCategoryName,
-    setSelectCategoryName,
     handleSelectLanguage,
-    isSubmitting,
   } = useCategorySubmit(id, data);
 
-  console.log("image=======>", imageUrl);
-
-  const STYLE = `
-  .rc-tree-child-tree {
-    display: hidden;
-  }
-  .node-motion {
-    transition: all .3s;
-    overflow-y: hidden;
-  }
-`;
-
-  const motion = {
-    motionName: "node-motion",
-    motionAppear: false,
-    onAppearStart: (node) => {
-      return { height: 0 };
-    },
-    onAppearActive: (node) => ({ height: node.scrollHeight }),
-    onLeaveStart: (node) => ({ height: node.offsetHeight }),
-    onLeaveActive: () => ({ height: 0 }),
-  };
-
-  const renderCategories = (categories) => {
-    let myCategories = [];
-    // for (let category of categories) {
-    for (let category of [{_id: '', name: '', children: []}]) {
-      myCategories.push({
-        title: showingTranslateValue(category.name, lang),
-        key: category._id,
-        children:
-          category.children?.length  > 0 && renderCategories(category.children),
-      });
-    }
-
-    return myCategories;
-  };
-
-  const findObject = (obj, target) => {
-    return obj._id === target
-      ? obj
-      : obj?.children?.reduce(
-          (acc, obj) => acc ?? findObject(obj, target),
-          undefined
-        );
-  };
-
-  const handleSelect = async (key) => {
-    // console.log('key', key, 'id', id);
-    if (key === undefined) return;
-    if (id) {
-      const parentCategoryId = await CategoryServices.getCategoryById(key);
-
-      if (id === key) {
-        return notifyError("This can't be select as a parent category!");
-      } else if (id === parentCategoryId.parentId) {
-        return notifyError("This can't be select as a parent category!");
-      } else {
-        if (key === undefined) return;
-        setChecked(key);
-
-        const obj = data[0];
-        const result = findObject(obj, key);
-
-        setSelectCategoryName(showingTranslateValue(result?.name, lang));
-      }
-    } else {
-      if (key === undefined) return;
-      setChecked(key);
-
-      const obj = data[0];
-      const result = findObject(obj, key);
-
-      setSelectCategoryName(showingTranslateValue(result?.name, lang));
-    }
-  };
 
   const [details, setDetails] = useState({
     name: '',

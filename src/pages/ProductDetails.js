@@ -19,10 +19,7 @@ import PageTitle from "components/Typography/PageTitle";
 import { SidebarContext } from "context/SidebarContext";
 import useAsync from "hooks/useAsync";
 import useFilter from "hooks/useFilter";
-import useProductSubmit from "hooks/useProductSubmit";
-import useToggleDrawer from "hooks/useToggleDrawer";
 import ProductServices from "services/ProductServices";
-import { showingTranslateValue } from "utils/translate";
 import SettingServices from "services/SettingServices";
 import ModalWrapper from "components/common/ModalWrapper";
 import styled from "styled-components";
@@ -31,26 +28,28 @@ import AddGallery from "components/product/AddGallery";
 const ProductDetails = () => {
   const { id } = useParams();
   const { t } = useTranslation();
-  const { handleUpdate } = useToggleDrawer();
-  const { attribue } = useProductSubmit(id);
-  const [variantTitle, setVariantTitle] = useState([]);
+  const [variantTitle, ] = useState([]);
   const { lang } = useContext(SidebarContext);
 
   const [data,setData] = useState({})
   const [loading, setLoading] = useState(false)
 
   const fetchData = () => {
+    setLoading(true)
     ProductServices.getProductById(id)
     .then(res=>{
+      setLoading(false)
       setData(res)
       console.log(res)
     }).catch(err=>{
+      setLoading(false)
       console.log(err)
     })
   }
 
   useEffect(()=>{
     fetchData();
+    // eslint-disable-next-line
   },[])
 
 
@@ -58,7 +57,7 @@ const ProductDetails = () => {
 
   const currency = globalSetting?.default_currency || "$";
 
-  const { handleChangePage, totalResults, resultsPerPage, dataTable } =
+  const { handleChangePage, totalResults, resultsPerPage } =
     useFilter(data?.variants || "[]");
 
   const [isModal, setModal] = useState(null);
@@ -70,12 +69,12 @@ const ProductDetails = () => {
     }
   }
 
-  const handleAddGallery = async ()=>{
-    const res = await ProductServices.addGallery(data)
-    if(res){
-      fetchData();
-    }
-  }
+  // const handleAddGallery = async ()=>{
+  //   const res = await ProductServices.addGallery(data)
+  //   if(res){
+  //     fetchData();
+  //   }
+  // }
 
 
   return (

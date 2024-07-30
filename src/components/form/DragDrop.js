@@ -15,6 +15,7 @@ const ImageDropzone = ({saveImages, defaultImages, small, maxFiles}) => {
     }else{
       saveImages([...images, ...newImages])
     }
+    // eslint-disable-next-line
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({

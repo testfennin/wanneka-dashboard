@@ -9,13 +9,13 @@ import useAsync from "./useAsync";
 import { SidebarContext } from "context/SidebarContext";
 import AttributeServices from "services/AttributeServices";
 import ProductServices from "services/ProductServices";
-import { notifyError, notifySuccess } from "utils/toast";
+import { notifyError, } from "utils/toast";
 import SettingServices from "services/SettingServices";
 import { showingTranslateValue } from "utils/translate";
 
 const useProductSubmit = (id) => {
   const location = useLocation();
-  const { isDrawerOpen, closeDrawer, setIsUpdate, lang } =
+  const { isDrawerOpen, lang } =
     useContext(SidebarContext);
 
   const { data: attribue } = useAsync(AttributeServices.getShowingAttributes);
@@ -31,7 +31,6 @@ const useProductSubmit = (id) => {
   const [values, setValues] = useState({});
   let [variants, setVariants] = useState([]);
   const [variant, setVariant] = useState([]);
-  const [totalStock, setTotalStock] = useState(0);
   const [quantity, setQuantity] = useState(0);
 
   const [originalPrice, setOriginalPrice] = useState(0);
@@ -45,7 +44,6 @@ const useProductSubmit = (id) => {
   const [variantTitle, setVariantTitle] = useState([]);
   const [attributes, setAttributes] = useState([]);
   const [productId, setProductId] = useState("");
-  const [updatedId, setUpdatedId] = useState(id);
   const [imgId, setImgId] = useState("");
   const [isBulkUpdate, setIsBulkUpdate] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState([]);
@@ -249,7 +247,6 @@ const useProductSubmit = (id) => {
       setVariants([]);
       setVariant([]);
       setValues({});
-      setTotalStock(0);
       setSelectedCategory([]);
       setDefaultCategory([]);
       if (location.pathname === "/products") {
@@ -273,7 +270,6 @@ const useProductSubmit = (id) => {
       setIsSubmitting(false);
       setAttributes([]);
 
-      setUpdatedId();
       return;
     } else {
       handleProductTap("Basic Info", true);
@@ -290,7 +286,6 @@ const useProductSubmit = (id) => {
           if (res) {
             setResData(res);
             setSlug(res.slug);
-            setUpdatedId(res._id);
             setValue("title", res.title[language ? language : "en"]);
             setValue(
               "description",
@@ -327,7 +322,6 @@ const useProductSubmit = (id) => {
             setVariants(res.variants);
             setIsCombination(res.isCombination);
             setQuantity(res?.stock);
-            setTotalStock(res.stock);
             setOriginalPrice(res?.prices?.originalPrice);
             setPrice(res?.prices?.price);
           }
@@ -362,10 +356,7 @@ const useProductSubmit = (id) => {
     const res = Object?.keys(Object.assign({}, ...variants));
     const varTitle = [{title: ''}]?.filter((att) => res.includes(att._id));
 
-    if (variants?.length > 0) {
-      const totalStock = variants?.reduce((pre, acc) => pre + acc.quantity, 0);
-      setTotalStock(Number(totalStock));
-    }
+
     setVariantTitle(varTitle);
   }, [attribue, variants, language, lang]);
 
@@ -585,11 +576,6 @@ const useProductSubmit = (id) => {
       })
     );
 
-    const totalStock = variants.reduce(
-      (pre, acc) => pre + Number(acc.quantity),
-      0
-    );
-    setTotalStock(Number(totalStock));
   };
 
   //for change language in product drawer

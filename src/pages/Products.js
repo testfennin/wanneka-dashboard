@@ -5,8 +5,6 @@ import {
   TableCell,
   TableFooter,
   TableContainer,
-  Select,
-  Input,
   Button,
   Card,
   CardBody,
@@ -15,7 +13,6 @@ import {
 import { useTranslation } from "react-i18next";
 import { FiPlus } from "react-icons/fi";
 
-import useAsync from "hooks/useAsync";
 import useToggleDrawer from "hooks/useToggleDrawer";
 import UploadManyTwo from "components/common/UploadManyTwo";
 import NotFound from "components/table/NotFound";
@@ -23,8 +20,6 @@ import ProductServices from "services/ProductServices";
 import PageTitle from "components/Typography/PageTitle";
 import { SidebarContext } from "context/SidebarContext";
 import ProductTable from "components/product/ProductTable";
-import SelectCategory from "components/form/SelectCategory";
-import MainDrawer from "components/drawer/MainDrawer";
 import ProductDrawer from "components/drawer/ProductDrawer";
 import CheckBox from "components/form/CheckBox";
 import useProductFilter from "hooks/useProductFilter";
@@ -32,26 +27,17 @@ import { FiEdit, FiTrash2 } from "react-icons/fi";
 import DeleteModal from "components/modal/DeleteModal";
 import BulkActionDrawer from "components/drawer/BulkActionDrawer";
 import TableLoading from "components/preloader/TableLoading";
-import SettingServices from "services/SettingServices";
 import ModalWrapper from "components/common/ModalWrapper";
 import CategoryServices from "services/CategoryServices";
 import BulkUpdateProduct from "components/product/BulkUpdata";
 
 const Products = () => {
-  const { title, allId, serviceId } = useToggleDrawer();
+  const { allId,  } = useToggleDrawer();
 
   const { t } = useTranslation();
   const {
-    toggleDrawer,
     lang,
-    currentPage,
-    handleChangePage,
-    category,
-    setCategory,
-    searchRef,
     handleSubmitForAll,
-    sortedField,
-    setSortedField,
     limitData,
   } = useContext(SidebarContext);
 
@@ -88,6 +74,7 @@ const Products = () => {
     }else{
       setDisplay(data?.results)
     }
+    // eslint-disable-next-line
   },[searchText])
 
   useEffect(()=>{
@@ -98,6 +85,7 @@ const Products = () => {
     }else{
       setDisplay(data.results)
     }
+    // eslint-disable-next-line
   },[selectedCat])
 
   // useEffect(()=>{

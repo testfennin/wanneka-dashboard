@@ -1,18 +1,12 @@
 import React, { useContext } from "react";
-import useAsync from "hooks/useAsync";
-import LanguageServices from "services/LanguageServices";
 import { SidebarContext } from "context/SidebarContext";
 
 const SelectLanguageTwo = ({ handleSelectLanguage, register }) => {
   const data = [];
   const loading = false;
   const error = null;
-  // const { data, loading, error } = useAsync(
-  //   LanguageServices.getShowingLanguage
-  // );
   const { lang } = useContext(SidebarContext);
 
-  // console.log("lang", lang, "data", data);
 
   return (
     <>

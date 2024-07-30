@@ -1,8 +1,8 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Select } from "@windmill/react-ui";
 
 import OrderServices from "services/OrderServices";
-import { notifySuccess, notifyError } from "utils/toast";
+import { notifySuccess } from "utils/toast";
 import { SidebarContext } from "context/SidebarContext";
 
 export const orderStatuses = (type) => {

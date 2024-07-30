@@ -18,7 +18,6 @@ import { useTranslation } from "react-i18next";
 import exportFromJSON from "export-from-json";
 
 //internal import
-import useAsync from "hooks/useAsync";
 import useFilter from "hooks/useFilter";
 import OrderServices from "services/OrderServices";
 import NotFound from "components/table/NotFound";
@@ -32,18 +31,10 @@ import { orderStatuses } from "components/form/SelectStatus";
 
 const Orders = () => {
   const {
-    time,
-    setTime,
-    currentPage,
-    searchText,
-    searchRef,
     // setStatus,
     handleChangePage,
     handleSubmitForAll,
-    resultsPerPage,
-    startDate,
     setStartDate,
-    endDate,
     setEndDate,
     lang,
   } = useContext(SidebarContext);
@@ -126,6 +117,7 @@ const Orders = () => {
     if(filterData.length === 0){
       setFilterData(data?.results)
     }
+    // eslint-disable-next-line
   }, [status, search])
 
 
