@@ -10,7 +10,6 @@ import { Link } from "react-router-dom";
 const OrderTable = ({ orders, currency, globalSetting, fetchData }) => {
   // console.log('globalSetting',globalSetting)
   const { t } = useTranslation();
-  console.log('orders',orders)
 
   return (
     <>
@@ -18,11 +17,9 @@ const OrderTable = ({ orders, currency, globalSetting, fetchData }) => {
         {orders?.map((order, i) => (
           <TableRow key={i + 1}>
             <TableCell>
-              <span onClick={()=>{
-                
-              }} className={`font-semibold uppercase text-xs ${order?.order_id && `text-blue-400 cursor-pointer hover:scale-105`}`}>
+              <Link to={`order/${order.uid}`} className={`font-semibold uppercase text-xs ${order?.order_id && `text-blue-400 cursor-pointer hover:scale-105`}`}>
                 {order?.order_id ?? order?.orderitem_id}
-              </span>
+              </Link>
             </TableCell>
 
             <TableCell>

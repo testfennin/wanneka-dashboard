@@ -8,7 +8,7 @@ const Invoice = ({ data, currency, fetchData }) => {
   const [item, setItem] = useState(null)
   return (
     <>
-    {item && <ModalWrapper center close={()=>setItem(null)} title={item?.orderitem_id} content={<Item/>}/>}
+    {item && <ModalWrapper center close={()=>setItem(null)} title={item?.orderitem_id} content={<Item fetchData={fetchData} item={item} close={()=>setItem(null)}/>}/>}
       <TableBody className="bg-white dark:bg-gray-800 divide-y divide-gray-100 text-serif text-sm ">
         {data?.map((item, i) => (
           <TableRow key={i} className="dark:border-gray-700 dark:text-gray-400">
