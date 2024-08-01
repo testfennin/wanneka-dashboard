@@ -16,7 +16,7 @@ function Item({item, fetchData, close}) {
       </div>
       <div className="flex flex-col">
         <aside className="rounded-lg w-32 h-32 overflow-hidden mb-2">
-          <img src={orderItem?.product?.thumbnail} className="w-full h-full object-cover"/>
+          <img src={orderItem?.product?.thumbnail} alt='OrderItem-thubnail' className="w-full h-full object-cover"/>
         </aside>
         <small>{orderItem?.product?.name}</small>
         <small>Unit Price: ${orderItem?.unit_price}</small>
