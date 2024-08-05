@@ -121,7 +121,7 @@ const Customers = () => {
           </TableFooter>
         </TableContainer>
       ) : (
-        <NotFound title="Sorry, There are no customers right now." />
+        <NotFound title="Sorry, There are no customers right yet." />
       )}
     </>
   );
