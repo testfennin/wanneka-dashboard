@@ -51,17 +51,17 @@ const sidebar = [
     name: "Transactions",
     routes: [
       {
-        path: "/products",
+        path: "/transactions",
+        name: "Orders",
+      },
+      {
+        path: "/transactions/gift-cards",
         name: "Gift cards",
       },
       {
-        path: "/categories",
+        path: "/transactions/wallets",
         name: "Wallets",
       },
-      {
-        path: "/gift-cards",
-        name: "Orders",
-      }
     ],
   },
 
