@@ -20,18 +20,18 @@ const formats = [
   'link', 'image', 'video'
 ];
 
-const TextEditor = ({value, setValue}) => {
+const TextEditor = ({value, setValue, required}) => {
   // const [value, setValue] = useState('');
 
   return (
-    <div className=''>
+    <div>
       <ReactQuill 
+        required
         theme="snow" 
         value={value} 
         onChange={setValue} 
         modules={modules}
         formats={formats}
-        
       />
     </div>
   );

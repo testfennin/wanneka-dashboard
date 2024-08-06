@@ -19,6 +19,8 @@ import useToggleDrawer from "hooks/useToggleDrawer";
 import AttributeServices from "services/AttributeServices";
 import CurrencyServices from "services/CurrencyServices";
 import { notifyError, notifySuccess } from "utils/toast";
+import styled from "styled-components";
+import { GiftCardServices } from "services/GiftCardServices";
 
 const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId, close, fetchData }) => {
   const { closeModal, setIsUpdate } = useContext(SidebarContext);
@@ -39,14 +41,6 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId, close, 
             fetchData();
             setIsCheck([])
           }
-          // for (const [idx, id] of ids.entries()) {
-          //   const res = await ProductServices.deleteProduct(id);
-          //   if (idx === ids.length - 1 && res) {
-          //     close();
-          //     fetchData();
-          //     setIsCheck([]);
-          //   }
-          // }
         } else if (id) {
           const res = await ProductServices.deleteProduct(id);
           if(res){
@@ -110,6 +104,27 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId, close, 
         setServiceId();
         setIsSubmitting(false);
       }
+
+
+      if(location.pathname?.includes('gift-cards')){
+        if (ids) {
+          for (const [idx, id] of ids.entries()) {
+            const res = await GiftCardServices.deleteCard(id);
+            if (idx === ids.length - 1 && res) {
+              close();
+              fetchData();
+              setIsCheck([]);
+            }
+          }
+        } else {
+          const res = await GiftCardServices.deleteCard(id);
+          if(res){
+            close();
+            fetchData();
+          }
+        }
+      }
+
 
       if (location.pathname === "/customers") {
         const res = await CustomerServices.deleteCustomer(id);
@@ -230,16 +245,16 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId, close, 
   const { t } = useTranslation();
 
   return (
-    <div className="bg-gray-800 flex flex-col items-center p-4 rounded-xl">
-      <section className="text-gray-400 flex flex-col items-center w-fit">
+    <Container className="bg-gray-800 flex flex-col items-center p-4 rounded-xl ">
+      <section className="text-gray-300 flex flex-col items-center w-fit px-6">
         <span className="flex justify-center text-3xl mb-6 text-red-500">
           <FiTrash2 />
         </span>
-        {/* <h2 className="text-xl font-medium mb-1">{t('DeleteModalH2')}</h2> */}
         <h2 className="text-xl font-medium mb-2">
           {t("DeleteModalH2")} <span className="text-red-500">{title}</span>?
         </h2>
-        <p>{t("DeleteModalPtag")}</p>
+        {ids ? <small className="text-gray-500">{t("DeleteModalPtag")}</small> : <small className="text-gray-500">Once deleted, you will no longer see it in your data.</small>}
+        
       </section>
       <section className="flex items-center mt-6">
         <Button
@@ -270,17 +285,19 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId, close, 
             <Button onClick={handleDelete} className="w-full h-12 sm:w-auto">
               {t("modalDeletBtn")}
             </Button>
-            // <button
-            //   type="submit"
-            //   className="text-sm mt-6 leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold font-serif text-center justify-center border-0 border-transparent rounded-md focus-visible:outline-none focus:outline-none text-white px-4 md:px-6 lg:px-8 py-4 md:py-3.5 lg:py-4 hover:text-white bg-green-400 hover:bg-green-500 h-10"
-            // >
-            //   Park Order
-            // </button>
           )}
         </div>
       </section>
-    </div>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  min-width: 500px;
+  @media only screen and (max-width: 555px){
+    min-width: 98%;
+    width: 98%;
+  }
+`
 
 export default React.memo(DeleteModal);

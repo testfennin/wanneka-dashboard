@@ -8,6 +8,7 @@ import {
   FiGlobe,
   FiTarget,
 } from "react-icons/fi";
+import {GrTransaction} from "react-icons/gr"
 
 /**
  * ⚠ These are used just to render the Sidebar!
@@ -35,14 +36,32 @@ const sidebar = [
         path: "/categories",
         name: "Categories",
       },
-      // {
-      //   path: "/attributes",
-      //   name: "Attributes",
-      // },
+      {
+        path: "/gift-cards",
+        name: "Gift cards",
+      },
       {
         path: "/coupons",
         name: "Promos",
       },
+    ],
+  },
+  {
+    icon: GrTransaction,
+    name: "Transactions",
+    routes: [
+      {
+        path: "/products",
+        name: "Gift cards",
+      },
+      {
+        path: "/categories",
+        name: "Wallets",
+      },
+      {
+        path: "/gift-cards",
+        name: "Orders",
+      }
     ],
   },
 

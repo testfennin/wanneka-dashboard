@@ -4,6 +4,8 @@ import { Select } from "@windmill/react-ui";
 import OrderServices from "services/OrderServices";
 import { notifySuccess } from "utils/toast";
 import { SidebarContext } from "context/SidebarContext";
+import { giftcardStatus } from "components/GiftCard/GiftCardTable";
+import { GiftCardServices } from "services/GiftCardServices";
 
 export const orderStatuses = (type) => {
   return type === 'item' ? {
@@ -24,11 +26,11 @@ export const orderStatuses = (type) => {
     }
   }
 
-const SelectStatus = ({ id, order, fetchData, item }) => {
+const SelectStatus = ({ id, order, card, fetchData, item }) => {
   // console.log('id',id ,'order',order)
   const { setIsUpdate } = useContext(SidebarContext);
   const handleChangeStatus =async (id, status) => {
-    // return notifyError("CRUD operation is disabled for this option!");
+
     if(item){
       const res =await OrderServices.updateItem(id, {status});
       if(res){
@@ -36,17 +38,26 @@ const SelectStatus = ({ id, order, fetchData, item }) => {
         fetchData && fetchData();
       }
     }
-    OrderServices.updateOrder(id, { status: status })
-      .then((res) => {
-        notifySuccess(res.message);
+    if(order){
+      OrderServices.updateOrder(id, { status: status })
+        .then((res) => {
+          notifySuccess(res.message);
+          setIsUpdate(true);
+          fetchData && fetchData();
+        })
+        .catch((err) => {
+          setTimeout(() => {
+            fetchData && fetchData();
+          }, 2000);
+        });
+    }
+    if(card){
+      const res =await GiftCardServices.updateCard(id, {status});
+      if(res){
         setIsUpdate(true);
         fetchData && fetchData();
-      })
-      .catch((err) => {
-        setTimeout(() => {
-          fetchData && fetchData();
-        }, 2000);
-      });
+      }
+    }
   };
 
 
@@ -59,10 +70,15 @@ const SelectStatus = ({ id, order, fetchData, item }) => {
         <option value="" >
           Set Status
         </option>
+
         {
-          Object.keys(orderStatuses(item?'item':'')).map((key, idx)=>{
-            return <option defaultValue={(order?.status || item?.status) === key} value={key}>
+          order ? Object.keys(orderStatuses(item?'item':'')).map((key, idx)=>{
+            return <option key={`status-${idx}`} defaultValue={(order?.status || item?.status) === key} value={key}>
               {orderStatuses(item?'item':'')[key]}
+            </option>
+          }) : Object.keys(giftcardStatus).map((key, idx)=>{
+            return <option key={`status-${idx}`} defaultValue={(card?.status) === key} value={key}>
+              {giftcardStatus[key]}
             </option>
           })
         }

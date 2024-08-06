@@ -61,7 +61,7 @@ axiosInstance.interceptors.response.use(
               console.error('Error refreshing access token:', refreshError)
               document.location.href = '/login'
             }
-          } else window.location.href = '/login';
+          } else document.location.href = '/login';
 
     } else if (error.response && error.response.status === 401 && error.response.data.details.includes("Token is invalid or expired")) {
       document.location.href = '/login'

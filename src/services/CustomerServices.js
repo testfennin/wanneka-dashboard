@@ -1,8 +1,14 @@
+import axiosInstance from "utils/axios";
 import requests from "./httpService";
+import { baseUrl } from "./AdminServices";
 
 const CustomerServices = {
   getAllCustomers: async ({ searchText = "" }) => {
-    return requests.get(`/customer?searchText=${searchText}`);
+    try{
+        return axiosInstance.get(`${baseUrl}/customers/`)
+    }catch(err){
+        console.log(err)
+    }
   },
 
   addAllCustomers: async (body) => {

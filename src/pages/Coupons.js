@@ -38,8 +38,10 @@ const Coupons = () => {
   const [loading, setLoading] = useState(false)
   // const { data, loading } = useAsync(CouponServices.getAllCoupons);
 
-  const fetchData = (page, params) => {
-    setLoading(true)
+  const fetchData = (page, params, load) => {
+    if(load){
+      setLoading(true)
+    }
     CouponServices.getAllCoupons(page||0, params)
     .then(res=>{
       setLoading(false)
@@ -52,7 +54,7 @@ const Coupons = () => {
   }
 
   useEffect(()=>{
-    fetchData();
+    fetchData(null, null, true);
   }, [])
 
   const [isCheckAll, setIsCheckAll] = useState(false);
@@ -219,8 +221,8 @@ const Coupons = () => {
           </Table>
           <TableFooter>
             <Pagination
-              totalResults={totalResults}
-              resultsPerPage={resultsPerPage}
+              totalResults={data?.count}
+              resultsPerPage={10}
               onChange={(p)=>fetchData(p>1?((10*p)-10):0)}
               label="Table navigation"
             />
