@@ -262,11 +262,12 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId, close, 
         }
       }
     } catch (err) {
-      notifyError(err ? err?.response?.data?.message : err?.message);
-      setServiceId();
-      setIsCheck([]);
-      closeModal();
-      setIsSubmitting(false);
+      console.log(err)
+      // notifyError(err ? err?.response?.data?.message : err?.message);
+      // setServiceId();
+      // setIsCheck([]);
+      // closeModal();
+      // setIsSubmitting(false);
     }
   };
 

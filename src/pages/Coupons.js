@@ -66,8 +66,6 @@ const Coupons = () => {
     handleSubmitCoupon,
     couponRef,
     serviceData,
-    totalResults,
-    resultsPerPage,
     handleSelectFile,
     filename,
     isDisabled,

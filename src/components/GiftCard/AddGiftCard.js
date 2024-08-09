@@ -6,7 +6,7 @@ import { giftcardStatus } from './GiftCardTable';
 import { AdminContext } from 'context/AdminContext';
 
 function AddGiftCard({ id, close, data, fetchData }) {
-    const { state, dispatch } = useContext(AdminContext);
+    const { state } = useContext(AdminContext);
     const { adminInfo } = state;
     console.log(adminInfo)
     const [detail, setDetail] = useState({

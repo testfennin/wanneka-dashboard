@@ -2,7 +2,6 @@ import {
   Button,
   Card,
   CardBody,
-  Input,
   Pagination,
   Table,
   TableCell,
@@ -15,17 +14,12 @@ import { FiEdit, FiPlus, FiTrash2 } from "react-icons/fi";
 
 import { useTranslation } from "react-i18next";
 import { SidebarContext } from "context/SidebarContext";
-import CouponServices from "services/CouponServices";
 import useToggleDrawer from "hooks/useToggleDrawer";
 import useFilter from "hooks/useFilter";
 import PageTitle from "components/Typography/PageTitle";
 import DeleteModal from "components/modal/DeleteModal";
 import BulkActionDrawer from "components/drawer/BulkActionDrawer";
-import MainDrawer from "components/drawer/MainDrawer";
-import CouponDrawer from "components/drawer/CouponDrawer";
-import TableLoading from "components/preloader/TableLoading";
 import CheckBox from "components/form/CheckBox";
-import CouponTable from "components/coupon/CouponTable";
 import NotFound from "components/table/NotFound";
 import  UploadManyTwo  from 'components/common/UploadManyTwo';
 import ModalWrapper from "components/common/ModalWrapper";
@@ -65,11 +59,10 @@ const GiftCards = () => {
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [isCheck, setIsCheck] = useState([]);
 
-  const { allId, serviceId } = useToggleDrawer();
+  const { allId } = useToggleDrawer();
 
   const {
     handleSubmitCoupon,
-    serviceData,
     handleSelectFile,
     filename,
     isDisabled,
@@ -109,6 +102,7 @@ const GiftCards = () => {
         if(code.includes(searchText) || amount.includes(searchText)){
           return card
         }
+        return []
       });
 
       if(res.length>0){
@@ -119,6 +113,7 @@ const GiftCards = () => {
     }else{
       setDisplay(data.results)
     }
+    // eslint-disable-next-line
   },[search])
 
   return (

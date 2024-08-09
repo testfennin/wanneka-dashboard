@@ -1,7 +1,5 @@
 import axiosInstance from "utils/axios";
-import requests from "./httpService";
-import { baseUrl, userBaseUrl } from "./AdminServices";
-import axios from "axios";
+import { baseUrl } from "./AdminServices";
 
 const TransactionServices = {
     getGiftCardPayments: async (page, params) => {

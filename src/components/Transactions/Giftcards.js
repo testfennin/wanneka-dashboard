@@ -2,7 +2,6 @@ import {
   Button,
   Card,
   CardBody,
-  Input,
   Pagination,
   Table,
   TableCell,
@@ -11,36 +10,24 @@ import {
   TableHeader,
 } from "@windmill/react-ui";
 import { useContext, useEffect, useState } from "react";
-import { FiEdit, FiPlus, FiTrash2 } from "react-icons/fi";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
 
 import { useTranslation } from "react-i18next";
 import { SidebarContext } from "context/SidebarContext";
-import CouponServices from "services/CouponServices";
-import useToggleDrawer from "hooks/useToggleDrawer";
 import useFilter from "hooks/useFilter";
 import PageTitle from "components/Typography/PageTitle";
 import DeleteModal from "components/modal/DeleteModal";
-import BulkActionDrawer from "components/drawer/BulkActionDrawer";
-import MainDrawer from "components/drawer/MainDrawer";
-import CouponDrawer from "components/drawer/CouponDrawer";
-import TableLoading from "components/preloader/TableLoading";
 import CheckBox from "components/form/CheckBox";
-import CouponTable from "components/coupon/CouponTable";
 import NotFound from "components/table/NotFound";
 import  UploadManyTwo  from 'components/common/UploadManyTwo';
 import ModalWrapper from "components/common/ModalWrapper";
 import BulkUpdateCoupon from "components/coupon/BulkUpdate";
-import { GiftCardServices } from "services/GiftCardServices";
-import GiftCardTable from "components/GiftCard/GiftCardTable";
 import AddGiftCard from "components/GiftCard/AddGiftCard";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import TransactionServices from "services/TransactionsServices";
-import OrdersTransactionTable from "./OrdersTransactionTable";
 import GiftCardsTransactionTable from "./GiftCardsTransactionTable";
 
 const OrdersTransactions = () => {
-  const {  lang } = useContext(SidebarContext);
-  const params = useParams();
+  const { lang } = useContext(SidebarContext);
 
   const [data, setData] = useState({})
   const [display, setDisplay] = useState([])
@@ -111,6 +98,8 @@ const OrdersTransactions = () => {
 
         if(code.includes(searchText) || amount.includes(searchText)){
           return card
+        }else{
+            return []
         }
       });
 
@@ -122,12 +111,13 @@ const OrdersTransactions = () => {
     }else{
       setDisplay(data.results)
     }
+    // eslint-disable-next-line
   },[search])
 
-  const transactionType = {
-    "gift-cards":"Gift Cards",
-    "wallets":'Wallets'
-  }
+//   const transactionType = {
+//     "gift-cards":"Gift Cards",
+//     "wallets":'Wallets'
+//   }
 
   return (
     <>
@@ -184,14 +174,14 @@ const OrdersTransactions = () => {
                 </Button>
               </div>
 
-              <div className="w-full md:w-48 lg:w-48 xl:w-48">
+              {/* <div className="w-full md:w-48 lg:w-48 xl:w-48">
                 <Button onClick={()=>setAdd(true)} className="w-full rounded-md h-12">
                   <span className="mr-2">
                     <FiPlus />
                   </span>
                   Add Gift Card
                 </Button>
-              </div>
+              </div> */}
             </div>
           </form>
         </CardBody>

@@ -7,14 +7,11 @@ import {
 
 //internal import
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {Link} from 'react-router-dom'
-import useToggleDrawer from "hooks/useToggleDrawer";
 import DeleteModal from "components/modal/DeleteModal";
 import CouponDrawer from "components/drawer/CouponDrawer";
 import CheckBox from "components/form/CheckBox";
-import EditDeleteButton from "components/table/EditDeleteButton";
-import { showingTranslateValue } from "utils/translate";
 import ModalWrapper from "components/common/ModalWrapper";
 import SelectStatus from "components/form/SelectStatus";
 
@@ -27,7 +24,6 @@ export const orderTransStatus = {
 }
 
 const GiftCardsTransactionTable = ({ lang, isCheck, transactions, setIsCheck, fetchData }) => {
-  const { title, } = useToggleDrawer();
 
   const handleClick = (e) => {
     const { id, checked } = e.target;
@@ -39,7 +35,7 @@ const GiftCardsTransactionTable = ({ lang, isCheck, transactions, setIsCheck, fe
 
 
   const [isEdit, setEdit] = useState('')
-  const [data, setData] = useState({})
+  const [data] = useState({})
   const [isDelete, setDelete] = useState(null)
 
 
