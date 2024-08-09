@@ -19,13 +19,12 @@ import ModalWrapper from "components/common/ModalWrapper";
 import SelectStatus from "components/form/SelectStatus";
 
 
-export const giftcardStatus = {
-    active: 'Active',
-    inactive: 'Inactive',
-    expired: 'Expired'
+export const walletStatus = {
+    completed: 'Completed',
+    pending: 'Pending',
 }
 
-const GiftCardTable = ({ lang, isCheck, coupons: giftcards, setIsCheck, fetchData }) => {
+const WalletsTransactionTable = ({ lang, isCheck, coupons: wallets, setIsCheck, fetchData }) => {
   const { title, } = useToggleDrawer();
 
   const handleClick = (e) => {
@@ -54,59 +53,61 @@ const GiftCardTable = ({ lang, isCheck, coupons: giftcards, setIsCheck, fetchDat
       }
 
       <TableBody>
-        {giftcards?.map((card, i) => (
+        {wallets?.map((wallet, i) => (
           <TableRow key={i + 1} className="text-sm" >
             <TableCell>
               <CheckBox
                 type="checkbox"
-                name={card?.title?.en}
-                id={card.uid}
+                name={wallet?.title?.en}
+                id={wallet.uid}
                 handleClick={handleClick}
-                isChecked={isCheck?.includes(card.uid)}
+                isChecked={isCheck?.includes(wallet.uid)}
               />
             </TableCell>
 
             <TableCell>
               <div className="flex items-center">
-                <Link to={`/gift-cards/${card?.uid}`}>{card.access_code}</Link>
+                <Link to={`/gift-cards/${wallet?.uid}`}>{wallet.channel || 'N/A'}</Link>
               </div>
             </TableCell>
 
             <TableCell>
-              <p>{card.amount}</p>
+              <p>{wallet.amount}</p>
             </TableCell>
             <TableCell>
                 <div className="min-w-[200px] max-h-[100px] overflow-y-auto">
                     {
-                        card.description ? <small dangerouslySetInnerHTML={{__html: card.description}}></small> : 'N/A'
+                        wallet.description ? <small dangerouslySetInnerHTML={{__html: wallet.description}}></small> : 'N/A'
                     }
                 </div>
             </TableCell>
             <TableCell>
-              <p>{card.expiration_date?.split('T')[0]}</p>
+              <p>{wallet.created_at?.split('T')[0]}</p>
+            </TableCell>
+            <TableCell>
+              <p>{wallet.type || 'N/A'}</p>
             </TableCell>
             <TableCell>
                 <div className={`px-3 h-6 font-light flex items-center rounded-xl text-sm ${
-                    giftcardStatus[card.status] === giftcardStatus.active ? `text-green-600`:
-                    giftcardStatus[card.status] === giftcardStatus.inactive ? `text-orange-400`: `text-red-600`
+                    walletStatus[wallet.status] === walletStatus.completed ? `text-green-600`:
+                    walletStatus[wallet.status] === walletStatus.pending ? `text-orange-400`: `text-red-600`
                 }`}>
-                    {giftcardStatus[card.status]}
+                    {walletStatus[wallet.status]}
                 </div>
-              <p className="mx-auto text-center">{card.apply_to}</p>
             </TableCell>
 
             <TableCell className="text-center">
               {/* <ShowHideButton id={card.uid} val={card.status === 'active'?true:false} /> */}
-              <SelectStatus id={card.uid} card={card} fetchData={()=>fetchData()} />
+              <SelectStatus id={wallet.uid} transaction={wallet} fetchData={()=>fetchData()} />
             </TableCell>
 
             <TableCell>
               <div className="flex items-center justify-end">
                 <i onClick={()=>{
-                    setEdit(card.uid)
+                    setEdit(wallet.uid)
                 }} className="fa fa-edit mr-4 cursor-pointer hover:text-green-600"></i>
                 <i onClick={()=>{
-                    setDelete(card.uid)
+                    setDelete(wallet.uid)
                 }} className="fa fa-trash cursor-pointer hover:text-red-600"></i>
               </div>
             </TableCell>
@@ -117,4 +118,4 @@ const GiftCardTable = ({ lang, isCheck, coupons: giftcards, setIsCheck, fetchDat
   );
 };
 
-export default GiftCardTable;
+export default WalletsTransactionTable;

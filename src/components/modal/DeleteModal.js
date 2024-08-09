@@ -21,8 +21,12 @@ import CurrencyServices from "services/CurrencyServices";
 import { notifyError, notifySuccess } from "utils/toast";
 import styled from "styled-components";
 import { GiftCardServices } from "services/GiftCardServices";
+import TransactionServices from "services/TransactionsServices";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { transactionType } from "pages/Transactions";
 
 const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId, close, fetchData }) => {
+  const param = useParams();
   const { closeModal, setIsUpdate } = useContext(SidebarContext);
   const { setServiceId } = useToggleDrawer();
   const location = useLocation();
@@ -118,6 +122,30 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId, close, 
           }
         } else {
           const res = await GiftCardServices.deleteCard(id);
+          if(res){
+            close();
+            fetchData();
+          }
+        }
+      }
+
+
+      if (location.pathname?.includes('transactions')) {
+        let url =(id)=> transactionType[param.type] === transactionType["gift-cards"] ? `/giftcards-payments/${id}` :
+                transactionType[param.type] === transactionType.wallets ? `/wallets-payments/${id}` : 
+                `/orders-payments/${id}`
+
+        if (ids) {
+          for (const [idx, id] of ids.entries()) {
+            const res = await TransactionServices.deleteTrans(url(id));
+            if (idx === ids.length - 1 && res) {
+              close();
+              fetchData();
+              setIsCheck([]);
+            }
+          }
+        } else {
+          const res = await TransactionServices.deleteTrans(url(id));
           if(res){
             close();
             fetchData();

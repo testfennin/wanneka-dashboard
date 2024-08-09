@@ -56,7 +56,7 @@ const routes = [
     component: GiftCards,
   },
   {
-    path: "/transactions/:type?",
+    path: "/transactions/:type?/:id?",
     component: Transactions,
   },
   {

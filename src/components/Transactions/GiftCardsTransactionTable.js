@@ -19,13 +19,14 @@ import ModalWrapper from "components/common/ModalWrapper";
 import SelectStatus from "components/form/SelectStatus";
 
 
-export const giftcardStatus = {
-    active: 'Active',
-    inactive: 'Inactive',
-    expired: 'Expired'
+export const orderTransStatus = {
+    "pending": 'Pending', 
+    "completed": 'Completed', 
+    "refunded": 'Refunded', 
+    "reversed": 'Reversed'
 }
 
-const GiftCardTable = ({ lang, isCheck, coupons: giftcards, setIsCheck, fetchData }) => {
+const GiftCardsTransactionTable = ({ lang, isCheck, transactions, setIsCheck, fetchData }) => {
   const { title, } = useToggleDrawer();
 
   const handleClick = (e) => {
@@ -46,7 +47,7 @@ const GiftCardTable = ({ lang, isCheck, coupons: giftcards, setIsCheck, fetchDat
     <>
 
       {
-        isDelete && <ModalWrapper center close={()=>setDelete(null)} content={<DeleteModal fetchData={()=>fetchData()} close={()=>setDelete(null)} id={isDelete} title={title} />}/>
+        isDelete && <ModalWrapper center close={()=>setDelete(null)} content={<DeleteModal fetchData={()=>fetchData()} close={()=>setDelete(null)} id={isDelete?.uid} title={isDelete?.uid} />}/>
       }
 
       {
@@ -54,59 +55,54 @@ const GiftCardTable = ({ lang, isCheck, coupons: giftcards, setIsCheck, fetchDat
       }
 
       <TableBody>
-        {giftcards?.map((card, i) => (
+        {transactions?.map((trans, i) => (
           <TableRow key={i + 1} className="text-sm" >
             <TableCell>
               <CheckBox
                 type="checkbox"
-                name={card?.title?.en}
-                id={card.uid}
+                name={trans?.title?.en}
+                id={trans.uid}
                 handleClick={handleClick}
-                isChecked={isCheck?.includes(card.uid)}
+                isChecked={isCheck?.includes(trans.uid)}
               />
             </TableCell>
 
             <TableCell>
-              <div className="flex items-center">
-                <Link to={`/gift-cards/${card?.uid}`}>{card.access_code}</Link>
-              </div>
+                <Link to={`/order/${trans?.uid}`} className="text-blue-500">{trans.uid}</Link>
             </TableCell>
 
-            <TableCell>
-              <p>{card.amount}</p>
+            <TableCell className="">
+              <Link to={`/gift-cards/${trans?.giftcard?.uid}`} className="text-blue-500">{trans.giftcard?.access_code}</Link>
             </TableCell>
-            <TableCell>
-                <div className="min-w-[200px] max-h-[100px] overflow-y-auto">
-                    {
-                        card.description ? <small dangerouslySetInnerHTML={{__html: card.description}}></small> : 'N/A'
-                    }
-                </div>
+            <TableCell className="">
+                <p className="text-">{trans.amount}</p>
             </TableCell>
-            <TableCell>
-              <p>{card.expiration_date?.split('T')[0]}</p>
+            <TableCell className="text-center">
+              <p>{trans.created_at?.split('T')[0]}</p>
             </TableCell>
-            <TableCell>
-                <div className={`px-3 h-6 font-light flex items-center rounded-xl text-sm ${
-                    giftcardStatus[card.status] === giftcardStatus.active ? `text-green-600`:
-                    giftcardStatus[card.status] === giftcardStatus.inactive ? `text-orange-400`: `text-red-600`
+
+            <TableCell className="text-center">
+                <div className={`font-light text-sm ${
+                    orderTransStatus[trans.status] === orderTransStatus.completed ? `text-green-600`:
+                    orderTransStatus[trans.status] === orderTransStatus.pending ? `text-orange-400`: `text-red-600`
                 }`}>
-                    {giftcardStatus[card.status]}
+                    {orderTransStatus[trans.status]}
                 </div>
-              <p className="mx-auto text-center">{card.apply_to}</p>
+              {/* <p className="mx-auto text-center">{trans.apply_to}</p> */}
             </TableCell>
 
             <TableCell className="text-center">
               {/* <ShowHideButton id={card.uid} val={card.status === 'active'?true:false} /> */}
-              <SelectStatus id={card.uid} card={card} fetchData={()=>fetchData()} />
+              <SelectStatus id={trans.uid} transaction={trans} fetchData={()=>fetchData()} />
             </TableCell>
 
             <TableCell>
               <div className="flex items-center justify-end">
                 <i onClick={()=>{
-                    setEdit(card.uid)
+                    setEdit(trans.uid)
                 }} className="fa fa-edit mr-4 cursor-pointer hover:text-green-600"></i>
                 <i onClick={()=>{
-                    setDelete(card.uid)
+                    setDelete(trans)
                 }} className="fa fa-trash cursor-pointer hover:text-red-600"></i>
               </div>
             </TableCell>
@@ -117,4 +113,4 @@ const GiftCardTable = ({ lang, isCheck, coupons: giftcards, setIsCheck, fetchDat
   );
 };
 
-export default GiftCardTable;
+export default GiftCardsTransactionTable;
