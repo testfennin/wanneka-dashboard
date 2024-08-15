@@ -109,8 +109,7 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId, close, 
         setIsSubmitting(false);
       }
 
-
-      if(location.pathname?.includes('gift-cards')){
+      if(location.pathname?.includes('gift-cards') && !location.pathname?.includes('transactions')){
         if (ids) {
           for (const [idx, id] of ids.entries()) {
             const res = await GiftCardServices.deleteCard(id);
@@ -133,6 +132,7 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId, close, 
       if (location.pathname?.includes('transactions')) {
         let url =(id)=> transactionType[param.type] === transactionType["gift-cards"] ? `/giftcards-payments/${id}` :
                 transactionType[param.type] === transactionType.wallets ? `/wallets-payments/${id}` : 
+                transactionType[param.type] === transactionType["payment-proofs"] ? `/payment-proofs/${id}` : 
                 `/orders-payments/${id}`
 
         if (ids) {
@@ -154,13 +154,23 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId, close, 
       }
 
 
-      if (location.pathname === "/customers") {
-        const res = await CustomerServices.deleteCustomer(id);
-        setIsUpdate(true);
-        notifySuccess(res.message);
-        setServiceId();
-        closeModal();
-        setIsSubmitting(false);
+      if (location.pathname.includes("/customers")) {
+        if (ids) {
+          for (const [idx, id] of ids.entries()) {
+            const res = await CustomerServices.deleteCustomer(id);
+            if (idx === ids.length - 1 && res) {
+              close();
+              fetchData();
+              setIsCheck([]);
+            }
+          }
+        } else {
+          const res = await CustomerServices.deleteCustomer(id);
+          if(res){
+            close();
+            fetchData();
+          }
+        }
       }
 
       if (location.pathname === "/attributes") {

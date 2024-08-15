@@ -339,7 +339,7 @@ const InvoiceForDownload = ({ data, currency, globalSetting }) => {
               >
                 <Image
                   src={logoDark}
-                  alt="dashtar"
+                  alt="Shop Wanneka"
                   style={{
                     width: 80,
                   }}

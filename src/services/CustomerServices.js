@@ -3,14 +3,15 @@ import requests from "./httpService";
 import { baseUrl } from "./AdminServices";
 
 const CustomerServices = {
-  getAllCustomers: async ({ searchText = "" }) => {
-    try{
-        return axiosInstance.get(`${baseUrl}/customers/`)
-    }catch(err){
-        console.log(err)
-    }
-  },
-
+  getAllCustomers: async (page, params) => {
+        try {
+            let url = `${baseUrl}/customers?offset=${page}`;
+            if (params) url += params
+            return await axiosInstance.get(url);
+        } catch (err) {
+            return err;
+        }
+    },
   addAllCustomers: async (body) => {
     return requests.post("/customer/add/all", body);
   },
@@ -24,7 +25,11 @@ const CustomerServices = {
   },
 
   getCustomerById: async (id) => {
-    return requests.get(`/customer/${id}`);
+    try{
+      return axiosInstance.get(`${baseUrl}/customers/${id}/`,)
+    }catch(err){
+      console.log(err)
+    }
   },
 
   updateCustomer: async (id, body) => {
@@ -32,7 +37,11 @@ const CustomerServices = {
   },
 
   deleteCustomer: async (id) => {
-    return requests.delete(`/customer/${id}`);
+    try{
+      return axiosInstance.delete(`${baseUrl}/customers/${id}/`,)
+    }catch(err){
+      console.log(err)
+    }
   },
 };
 

@@ -91,22 +91,19 @@ const WalletsTrasactions = () => {
   useEffect(()=>{
     if(search.length>0){
       let wallets = data.results
+      let searchText = search.toLowerCase();
       let res = wallets?.filter(wallet=>{
         let code = `${wallet.channel}`?.toLowerCase();
         let status = `${wallet.status}`?.toLowerCase();
         let type = `${wallet.type}`?.toLowerCase();
         let amount = `${wallet.amount}`;
-        let searchText = search.toLowerCase();
 
-        if(
+        return (
             code.includes(searchText) || 
             amount.includes(searchText) ||
             status.includes(searchText) ||
             type.includes(searchText)
-        ){
-          return wallet
-        }
-        return []
+        )
       });
 
       if(res.length>0){

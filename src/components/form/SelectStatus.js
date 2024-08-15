@@ -11,6 +11,7 @@ import TransactionServices from "services/TransactionsServices";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { transactionType } from "pages/Transactions";
 import { walletStatus } from "components/Transactions/WalletsTransactionTable";
+import { proofStatus } from "components/Transactions/Proofs";
 
 export const orderStatuses = (type) => {
   return type === 'item' ? {
@@ -66,6 +67,7 @@ const SelectStatus = ({ id, order, card, transaction, fetchData, item }) => {
     if(transaction){
       let url = transactionType[param.type] === transactionType["gift-cards"] ? `/giftcards-payments/${id}` :
                 transactionType[param.type] === transactionType.wallets ? `/wallets-payments/${id}` : 
+                transactionType[param.type] === transactionType["payment-proofs"] ? `/payment-proofs/${id}` : 
                 `/orders-payments/${id}`;
       const res = await TransactionServices.update(url, {status})
       if(res){
@@ -98,6 +100,10 @@ const SelectStatus = ({ id, order, card, transaction, fetchData, item }) => {
           }) : transactionType[param.type] === transactionType.wallets ? Object.keys(walletStatus).map((key, idx)=>{
             return <option key={`status-${idx}`} defaultValue={(card?.status) === key} value={key}>
               {walletStatus[key]}
+            </option>
+          }) : transactionType[param.type] === transactionType["payment-proofs"] ? Object.keys(proofStatus).map((key, idx)=>{
+            return <option key={`status-${idx}`} defaultValue={(card?.status) === key} value={key}>
+              {proofStatus[key]}
             </option>
           }) : Object.keys(orderTransStatus).map((key, idx)=>{
             return <option key={`status-${idx}`} defaultValue={(card?.status) === key} value={key}>

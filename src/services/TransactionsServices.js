@@ -64,6 +64,15 @@ const TransactionServices = {
             return err;
         }
     },
+    getPaymentProofs: async (page, params) => {
+        try {
+            let url = `${baseUrl}/transactions/payment-proofs/?offset=${page}`;
+            if (params) url += params
+            return await axiosInstance.get(url);
+        } catch (err) {
+            return err;
+        }
+    }
 
 }
 

@@ -24,10 +24,21 @@ import ModalWrapper from "components/common/ModalWrapper";
 import BulkUpdateCoupon from "components/coupon/BulkUpdate";
 import AddGiftCard from "components/GiftCard/AddGiftCard";
 import TransactionServices from "services/TransactionsServices";
-import GiftCardsTransactionTable from "./GiftCardsTransactionTable";
+import ProofsTable from "./ProofsTable";
 
-const OrdersTransactions = () => {
-  const { lang } = useContext(SidebarContext);
+export const proofTypes = {
+    "order" : "Order",
+    "gift_card" : "Gift Card",
+    "wallet" : "Wallet"
+}
+
+export const proofStatus = {
+    "completed" : "Completed",
+    "pending" : 'Pending'
+}
+
+const PaymentProofs = () => {
+  const {  lang } = useContext(SidebarContext);
 
   const [data, setData] = useState({})
   const [display, setDisplay] = useState([])
@@ -38,7 +49,7 @@ const OrdersTransactions = () => {
       setLoading(true)
     }
 
-    TransactionServices.getGiftCardPayments(page||0, params)
+    TransactionServices.getPaymentProofs(page||0, params)
     .then(res=>{
       setLoading(false)
       console.log(res)
@@ -90,13 +101,27 @@ const OrdersTransactions = () => {
   const [search, setSearch] = useState('');
   useEffect(()=>{
     if(search.length>0){
-      let cards = data.results
-      let searchText = search.toLowerCase();
-      let res = cards?.filter(card=>{
-        let code = `${card.access_code}`?.toLowerCase();
-        let amount = `${card.amount}`;
+      let proofs = data.results
 
-        return code.includes(searchText) || amount.includes(searchText)
+      let searchText = search.toLowerCase();
+      let res = proofs?.filter(proof=>{
+        let user_first_name = `${proof.user?.first_name}`?.toLowerCase();
+        let user_last_name = `${proof.user?.last_name}`?.toLowerCase();
+        let user_email = `${proof.user?.email}`?.toLowerCase();
+        let note = `${proof.note}`?.toLowerCase();
+        let status = `${proof.status}`?.toLowerCase();
+        let type = `${proof.type}`?.toLowerCase();
+        let object = `${proof.object_id}`;
+
+        return (
+            user_first_name.includes(searchText) || 
+            user_last_name.includes(searchText) ||
+            user_email.includes(searchText) ||
+            note.includes(searchText) ||
+            object.includes(searchText) ||
+            status.includes(searchText) ||
+            type.includes(searchText)
+        )
       });
 
       if(res.length>0){
@@ -108,7 +133,7 @@ const OrdersTransactions = () => {
       setDisplay(data.results)
     }
     // eslint-disable-next-line
-  },[search, data.results])
+  },[search])
 
 //   const transactionType = {
 //     "gift-cards":"Gift Cards",
@@ -117,10 +142,10 @@ const OrdersTransactions = () => {
 
   return (
     <>
-      <PageTitle>{`Transactions - Gift Cards Payments`}</PageTitle>
+      <PageTitle>{`Transactions - Payment Proofs`}</PageTitle>
 
       {isBulkUpdate && <ModalWrapper center close={()=>setBulkUpdate(false)} content={<BulkUpdateCoupon close={()=>setBulkUpdate(false)} fetchData={fetchData} ids={isCheck} setIsCheck={val=>setIsCheck(val)} />}/>}
-      {isBulkDelete && <ModalWrapper center close={()=>setBulkDelete(false)} content={<DeleteModal fetchData={fetchData} ids={isCheck} setIsCheck={val=>setIsCheck(val)} close={()=>setBulkDelete(false)} title={`${isCheck.length} selected gift card`} />}/>}
+      {isBulkDelete && <ModalWrapper center close={()=>setBulkDelete(false)} content={<DeleteModal fetchData={fetchData} ids={isCheck} setIsCheck={val=>setIsCheck(val)} close={()=>setBulkDelete(false)} title={`${isCheck.length} selected payment proofs`} />}/>}
 
 
       {
@@ -186,7 +211,7 @@ const OrdersTransactions = () => {
       <Card className="min-w-0 shadow-xs overflow-hidden bg-white dark:bg-gray-800 mb-5">
         <CardBody>
             <div className="w-full flex items-center border border-gray-500 rounded-lg px-4">
-              <input value={search} onChange={e=>setSearch(e.target.value)} type="text" placeholder="Search by gift card's code/amount" 
+              <input value={search} onChange={e=>setSearch(e.target.value)} type="text" placeholder="Search by customer, type, note, object or status" 
                 className="text-sm outline-none bg-transparent border-none text-gray-500 dark:text-gray-100 w-full h-10" />
               {search.length>0 && <i onClick={()=>setSearch('')} className="cursor-pointer fa fa-times text-gray-500 dark:text-gray-100"></i>}
             </div>
@@ -211,16 +236,18 @@ const OrdersTransactions = () => {
                     isChecked={isCheckAll}
                   />
                 </TableCell>
-                <TableCell>TRANSACTION ID</TableCell>
-                <TableCell >GIFT CARD</TableCell>
-                <TableCell className="">AMOUNT</TableCell>
-                <TableCell className="text-center">DATE</TableCell>
-                <TableCell className="text-center">STATUS</TableCell>
+                <TableCell>CUSTOMER</TableCell>
+                <TableCell>PROOF</TableCell>
+                <TableCell>OBJECT</TableCell>
+                <TableCell>TYPE</TableCell>
+                <TableCell>NOTE</TableCell>
+                <TableCell className="text-left">STATUS</TableCell>
+                <TableCell>DATE</TableCell>
                 <TableCell className="text-center">UPDATE STATUS</TableCell>
                 <TableCell className="text-right">{t("CoupTblActions")}</TableCell>
               </tr>
             </TableHeader>
-            <GiftCardsTransactionTable lang={lang} isCheck={isCheck} transactions={display} setIsCheck={setIsCheck} fetchData={()=>fetchData()} />
+            <ProofsTable lang={lang} isCheck={isCheck} coupons={display} setIsCheck={setIsCheck} fetchData={()=>fetchData()} />
           </Table>
           <TableFooter>
             <Pagination
@@ -238,4 +265,4 @@ const OrdersTransactions = () => {
   );
 };
 
-export default OrdersTransactions;
+export default PaymentProofs;

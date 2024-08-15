@@ -94,15 +94,12 @@ const GiftCards = () => {
   useEffect(()=>{
     if(search.length>0){
       let cards = data.results
+      let searchText = search.toLowerCase();
       let res = cards?.filter(card=>{
         let code = `${card.access_code}`?.toLowerCase();
         let amount = `${card.amount}`;
-        let searchText = search.toLowerCase();
 
-        if(code.includes(searchText) || amount.includes(searchText)){
-          return card
-        }
-        return []
+        return (code.includes(searchText) || amount.includes(searchText))
       });
 
       if(res.length>0){

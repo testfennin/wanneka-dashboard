@@ -1,72 +1,118 @@
-import { TableBody, TableCell, TableRow } from "@windmill/react-ui";
-import CustomerDrawer from "components/drawer/CustomerDrawer";
-import MainDrawer from "components/drawer/MainDrawer";
-import DeleteModal from "components/modal/DeleteModal";
-import EditDeleteButton from "components/table/EditDeleteButton";
-import Tooltip from "components/tooltip/Tooltip";
-import * as dayjs from "dayjs";
-import useToggleDrawer from "hooks/useToggleDrawer";
-import { t } from "i18next";
-import React from "react";
-import { FiZoomIn } from "react-icons/fi";
-import { Link } from "react-router-dom";
-// internal imports
+import {
+  TableBody,
+  TableCell,
+  TableRow,
+} from "@windmill/react-ui";
+// import * as dayjs from "dayjs";
 
-const CustomerTable = ({ customers }) => {
-  const { title, serviceId, handleModalOpen, handleUpdate } = useToggleDrawer();
+//internal import
+
+import { useState } from "react";
+import {Link} from 'react-router-dom'
+import DeleteModal from "components/modal/DeleteModal";
+import CouponDrawer from "components/drawer/CouponDrawer";
+import CheckBox from "components/form/CheckBox";
+import ModalWrapper from "components/common/ModalWrapper";
+
+
+export const walletStatus = {
+    completed: 'Completed',
+    pending: 'Pending',
+}
+
+const CustomerTable = ({ lang, isCheck, coupons: proofs, setIsCheck, fetchData }) => {
+
+  const handleClick = (e) => {
+    const { id, checked } = e.target;
+    setIsCheck([...isCheck, id]);
+    if (!checked) {
+      setIsCheck(isCheck.filter((item) => item !== id));
+    }
+  };
+
+
+  const [isEdit, setEdit] = useState('')
+  const [data] = useState({})
+  const [isDelete, setDelete] = useState(null);
+  const [deleteTitle, setDeleteTitle] = useState('')
+
 
   return (
     <>
-      <DeleteModal id={serviceId} title={title} />
 
-      <MainDrawer>
-        <CustomerDrawer id={serviceId} />
-      </MainDrawer>
+      {
+        isDelete && <ModalWrapper center close={()=>setDelete(null)} content={<DeleteModal fetchData={()=>fetchData()} close={()=>setDelete(null)} id={isDelete} title={deleteTitle} />}/>
+      }
+
+      {
+        isEdit && <ModalWrapper close={()=>setEdit('')} content={<CouponDrawer data={data} fetchData={()=>fetchData()} close={()=>setEdit('')} id={isEdit} lang={lang} />}/>
+      }
 
       <TableBody>
-        {customers?.map((user) => (
-          <TableRow key={user._id}>
+        {proofs?.map((customer, i) => (
+          <TableRow key={i + 1} className="text-sm " >
             <TableCell>
-              <span className="font-semibold uppercase text-xs">
-                {" "}
-                {user?._id?.substring(20, 24)}
-              </span>
-            </TableCell>
-            <TableCell>
-              <span className="text-sm">
-                {dayjs(user.createdAt).format("MMM D, YYYY")}
-              </span>
-            </TableCell>
-            <TableCell>
-              <span className="text-sm">{user.name}</span>
-            </TableCell>
-            <TableCell>
-              <span className="text-sm">{user.email}</span>{" "}
-            </TableCell>
-            <TableCell>
-              <span className="text-sm font-medium">{user.phone}</span>
+              <CheckBox
+                type="checkbox"
+                name={customer?.title?.en}
+                id={customer.uid}
+                handleClick={handleClick}
+                isChecked={isCheck?.includes(customer.uid)}
+              />
             </TableCell>
 
             <TableCell>
-              <div className="flex justify-end text-right">
-                <div className="p-2 cursor-pointer text-gray-400 hover:text-green-600">
-                  {" "}
-                  <Link to={`/customer-order/${user._id}`}>
-                    <Tooltip
-                      id="view"
-                      Icon={FiZoomIn}
-                      title={t("ViewOrder")}
-                      bgColor="#34D399"
-                    />
-                  </Link>
-                </div>
+              <Link to={`/customer/${customer.uid}`} className="flex items-center text-blue-500">
+                <aside className="w-10 min-w-10 h-10 rounded-full overflow-hidden mr-2 border flex items-center justify-center">
+                    {
+                        customer?.avatar ? <img src={customer?.avatar} alt="" className="w-full h-full object-cover" /> :
+                        <small className="fa fa-user dark:text-white text-gray-500"></small>
+                    }
+                </aside>
+                <aside className="flex flex-col">
+                    <small>{customer?.first_name} {customer?.last_name}</small>
+                    <small className="">{customer?.email}</small>
+                </aside>
+              </Link>
+            </TableCell>
+            
+            <TableCell>
+                <small className={`${customer?.email_verified ? 'text-green-600':'text-red-600'}`}>{customer?.email_verified ? 'YES':'NO'}</small>
+            </TableCell>
 
-                <EditDeleteButton
-                  title={user.name}
-                  id={user._id}
-                  handleUpdate={handleUpdate}
-                  handleModalOpen={handleModalOpen}
-                />
+            <TableCell>
+                <small>{customer?.gender || 'N/A'}</small>
+            </TableCell>
+
+
+            <TableCell>
+                {customer?.phone || 'N/A'}
+            </TableCell>
+
+            <TableCell>
+                <small className={`${customer?.phone_verified ? 'text-green-600':'text-red-600'}`}>{customer?.phone_verified ? 'YES':'NO'}</small>
+            </TableCell>
+
+            <TableCell>
+                <small>{customer.provider || 'N/A'}</small>
+            </TableCell>
+            
+            <TableCell className="text-cnter">
+                <small>{customer.user_type}</small>
+            </TableCell>
+            <TableCell>
+                <small>{customer.created_at?.split('T')[0]}</small>
+            </TableCell>
+
+            <TableCell>
+              <div className="flex items-center justify-end">
+                <i onClick={()=>{
+                    setEdit(customer.uid)
+                }} className="fa fa-edit mr-4 cursor-pointer hover:text-green-600"></i>
+                <i onClick={()=>{
+                    setDelete(customer.uid)
+                    setDeleteTitle(customer.first_name || customer?.email)
+                }} className="fa fa-trash cursor-pointer hover:text-red-600"></i>
               </div>
             </TableCell>
           </TableRow>

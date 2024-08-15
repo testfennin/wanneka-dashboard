@@ -1,7 +1,7 @@
 {
-  "name": "dashtar-admin",
+  "name": "Shop Wanneka-admin",
   "version": "0.1.0",
-  "description": "this is Dashtar-admin built with react.js and tailwindcss",
+  "description": "this is Shop Wanneka-admin built with react.js and tailwindcss",
   "private": true,
   "dependencies": {
     "@cloudinary/react": "^1.11.2",

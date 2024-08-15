@@ -62,6 +62,10 @@ const sidebar = [
         path: "/transactions/wallets",
         name: "Wallets",
       },
+      {
+        path: "/transactions/payment-proofs",
+        name: "Payment Proofs",
+      },
     ],
   },
 
