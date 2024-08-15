@@ -10,6 +10,8 @@ import {
   Table,
   TableContainer,
   WindmillContext,
+  TableBody,
+  TableRow,
 } from "@windmill/react-ui";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 
@@ -24,6 +26,8 @@ import PageTitle from "components/Typography/PageTitle";
 import InvoiceForDownload from "components/invoice/InvoiceForDownload";
 import SettingServices from "services/SettingServices";
 import { useTranslation } from "react-i18next";
+import { giftcardStatus } from "components/GiftCard/GiftCardTable";
+import { Link } from "react-router-dom/cjs/react-router-dom";
 
 const OrderInvoice = () => {
   const params = useParams();
@@ -83,14 +87,14 @@ const OrderInvoice = () => {
                   )}
                 </h2>
                 <div className="flex flex-col text-sm text-gray-500 dark:text-gray-400 mt-2">
-                  <span>{data?.shipping_address?.recipient_name}</span>
-                  <span>{data?.shipping_address?.address}</span>
-                  <span>{data?.shipping_address?.recipient_number}</span>
-                  <span>{`${data?.shipping_address?.city?.name}, ${data?.shipping_address?.region?.name}, ${data?.shipping_address?.country?.name}`}</span>
+                  <small>{data?.shipping_address?.recipient_name}</small>
+                  <small>{data?.shipping_address?.address}</small>
+                  <small>{data?.shipping_address?.recipient_number}</small>
+                  <small>{`${data?.shipping_address?.city?.name}, ${data?.shipping_address?.region?.name}, ${data?.shipping_address?.country?.name}`}</small>
                 </div>
               </div>
             </div>
-            <div className="flex lg:flex-row md:flex-row flex-col justify-between pt-4">
+            <div className="flex lg:flex-row md:flex-row flex-col justify-between border-b border-gray-50 dark:border-gray-700 py-4">
               <div className="mb-3 md:mb-0 lg:mb-0 flex flex-col">
                 <span className="font-bold font-serif text-sm uppercase text-gray-600 dark:text-gray-500 block">
                   {t("InvoiceDate")}
@@ -114,20 +118,22 @@ const OrderInvoice = () => {
                   {t("InvoiceTo")}
                 </span>
                 <div className="flex flex-col text-sm text-gray-500 dark:text-gray-400 mt-2">
-                  <span>{data?.shipping_address?.recipient_name}</span>
-                  <span>{data?.shipping_address?.address}</span>
-                  <span>{data?.shipping_address?.recipient_number}</span>
-                  <span>{`${data?.shipping_address?.city?.name}, ${data?.shipping_address?.region?.name}, ${data?.shipping_address?.country?.name}`}</span>
+                  <small>{data?.shipping_address?.recipient_name}</small>
+                  <small>{data?.shipping_address?.address}</small>
+                  <small>{data?.shipping_address?.recipient_number}</small>
+                  <small>{`${data?.shipping_address?.city?.name}, ${data?.shipping_address?.region?.name}, ${data?.shipping_address?.country?.name}`}</small>
                 </div>
               </div>
             </div>
+            
           </div>
         )}
-        <div>
+        <div className="my-8">
+          <p className="dark:text-gray-500 mb-2 text-sm font-bold">ORDER ITEMS</p>
           {loading ? (
             <Loading loading={loading} />
           ) : (
-            <TableContainer className="my-8">
+            <TableContainer className="">
               <Table>
                 <TableHeader>
                   <tr>
@@ -151,6 +157,92 @@ const OrderInvoice = () => {
                   globalSetting={globalSetting}
                   fetchData={fetchData}
                 />
+              </Table>
+            </TableContainer>
+          )}
+        </div>
+
+        <div className="my-8">
+          <p className="dark:text-gray-500 mb-2 text-sm font-bold">GIFT CARDS USED</p>
+          {loading ? (
+            <Loading loading={loading} />
+          ) : (
+            <div className="grid grid-cols-3 gap-4">
+              {
+                [1,2,3]?.map((card, idx)=>{
+                  return <aside key={`order-gift-cards-${idx}`} className=" dark:border-gray-500 dark:text-gray-800 dark:bg-gray-300 bg-gray-100 shadow flex flex-col rounded-xl p-4">
+                    <div className="w-full flex items-center justify-between mb-3">
+                      <Link to={`/gift-cards/${card?.uid}`}>#{card?.access_code}SDF3FSF</Link>
+                      <small>{giftcardStatus[card?.status]}Active</small>
+                    </div>
+                    <h1 className="text-2xl font-bold text-green-700">${card?.amount}34523</h1>
+                    <small>Expiry: 2nd July, 2025 {card?.expiration_date?.split('T')[0]}</small>
+                  </aside>
+                })
+              }
+              {data?.gift_cards?.length === 0 && <p className="text-green-600">No Gift Card Used</p>}
+            </div>
+          )}
+        </div>
+
+        <div className="my-8">
+          <p className="dark:text-gray-500 mb-2 text-sm font-bold">PROMO CODES USED</p>
+          {loading ? (
+            <Loading loading={loading} />
+          ) : (
+            <TableContainer className="">
+              <Table>
+                <TableHeader>
+                  <tr>
+                    <TableCell>{t("Sr")}</TableCell>
+                    <TableCell className="">Code</TableCell>
+                    <TableCell className="text-center">
+                      Discount Type
+                    </TableCell>
+                    <TableCell className="text-center">
+                      Discount
+                    </TableCell>
+                    <TableCell className="text-left">
+                      Min Order Amount
+                    </TableCell>
+                    <TableCell className="text-left">
+                      Status
+                    </TableCell>
+                    <TableCell className="text-right">Apply To</TableCell>
+                  </tr>
+                </TableHeader>
+                <TableBody className="bg-white dark:bg-gray-800 divide-y divide-gray-100 text-serif text-sm ">
+                  {[1,2,3]?.map((item, i) => (
+                    <TableRow key={i} className="dark:border-gray-700 dark:text-gray-400">
+                      <TableCell className="px-6 py-1 whitespace-nowrap font-normal text-gray-500 text-left">
+                        {i + 1}{" "}
+                      </TableCell>
+                      <TableCell onClick={()=>setItem(item)} className="px-4 py-1 whitespace-nowrap text-left font-normal cursor-auto text-blue-400">
+                        <span className="cursor-pointer">{item?.code}SDJF23</span>
+                      </TableCell>
+                      <TableCell className="px-6 py-1 whitespace-nowrap font-bold text-center">
+                        {item.discount_type}{"Percentage "}
+                      </TableCell>
+                      <TableCell className="px-6 py-1 whitespace-nowrap font-bold text-center">
+                        {currency}
+                        {parseFloat(item.discount).toFixed(2)}
+                        34523
+                      </TableCell>
+
+                      <TableCell className="px-4 py-1 whitespace-nowrap text-left font-bold">
+                        {currency}{item?.min_order_amount}232234
+                      </TableCell>
+
+                      <TableCell className="px-4 py-1 whitespace-nowrap text-left font-bold">
+                        {item?.status}Active
+                      </TableCell>
+
+                      <TableCell className="px-6 py-1 whitespace-nowrap text-right font-bold text-red-500 dark:text-green-500">
+                        {item?.apply_to}Order
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
               </Table>
             </TableContainer>
           )}

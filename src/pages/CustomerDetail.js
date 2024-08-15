@@ -8,6 +8,7 @@ import Loading from "components/preloader/Loading";
 import PageTitle from "components/Typography/PageTitle";
 import ModalWrapper from "components/common/ModalWrapper";
 import CustomerServices from "services/CustomerServices";
+import styled from "styled-components";
 
 const CustomerDetails = () => {
   const { id } = useParams();
@@ -70,24 +71,32 @@ const CustomerDetails = () => {
             </aside>
 
             <br />
-            <div className="p-4 grid grid-cols-3 gap-4 w-1/2">
-              <aside className="flex flex-col border rounded-lg p-3">
-                <small>Email Verified</small>
+            <SudDetail className="p-4 py-8 grid grid-cols-2 md:grid-cols-3 gap-6 text-center border dark:border-gray-500 rounded-xl">
+              <aside className="flex flex-col">
+                  <small className="mb-1">Date Joined</small>
+                  <p className="dark:text-gray-200">{user?.created_at?.split('T')[0]}</p>
+              </aside>
+              <aside className="flex flex-col">
+                  <small className="mb-1">Provider</small>
+                  <p className="dark:text-gray-200">{user?.provider}</p>
+              </aside>
+              <aside className="flex flex-col  rounded-lg">
+                <small className="mb-1">Email Verified</small>
                 <p className={`${user?.email_verified ? `text-green-600`:`text-red-600`}`}>{user?.email_verified ? 'YES':'NO'}</p>
               </aside>
-              <aside className="flex flex-col border rounded-lg p-3">
-                <small>Phone Verified</small>
+              <aside className="flex flex-col  rounded-lg">
+                <small className="mb-1">Phone Verified</small>
                 <p className={`${user?.phone_verified ? `text-green-600`:`text-red-600`}`}>{user?.phone_verified ? 'YES':'NO'}</p>
               </aside>
-              <aside className="flex flex-col border rounded-lg p-3">
-                <small>Active</small>
+              <aside className="flex flex-col  rounded-lg">
+                <small className="mb-1">Active Customer</small>
                 <p className={`${user?.is_active ? `text-green-600`:`text-red-600`}`}>{user?.is_active ? 'YES':'NO'}</p>
               </aside>
-              <aside className="flex flex-col border rounded-lg p-3">
-                <small>Suspended</small>
+              <aside className="flex flex-col  rounded-lg">
+                <small className="mb-1">Suspended</small>
                 <p className={`${!user?.is_suspended ? `text-green-600`:`text-red-600`}`}>{user?.is_suspended ? 'YES':'NO'}</p>
               </aside>
-            </div>
+            </SudDetail>
           </section>
         </div>
       )}
@@ -95,6 +104,14 @@ const CustomerDetails = () => {
     </>
   );
 };
+
+const SudDetail = styled.div`
+  width: 600px;
+
+  @media only screen and (max-width: 777px){
+    width: 100%;
+  }
+`
 
 
 export default CustomerDetails;
