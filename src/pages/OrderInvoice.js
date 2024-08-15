@@ -169,14 +169,14 @@ const OrderInvoice = () => {
           ) : (
             <div className="grid grid-cols-3 gap-4">
               {
-                [1,2,3]?.map((card, idx)=>{
+                data?.gift_cards?.map((card, idx)=>{
                   return <aside key={`order-gift-cards-${idx}`} className=" dark:border-gray-500 dark:text-gray-800 dark:bg-gray-300 bg-gray-100 shadow flex flex-col rounded-xl p-4">
                     <div className="w-full flex items-center justify-between mb-3">
-                      <Link to={`/gift-cards/${card?.uid}`}>#{card?.access_code}SDF3FSF</Link>
-                      <small>{giftcardStatus[card?.status]}Active</small>
+                      <Link to={`/gift-cards/${card?.uid}`}>#{card?.access_code}</Link>
+                      <small>{giftcardStatus[card?.status]}</small>
                     </div>
-                    <h1 className="text-2xl font-bold text-green-700">${card?.amount}34523</h1>
-                    <small>Expiry: 2nd July, 2025 {card?.expiration_date?.split('T')[0]}</small>
+                    <h1 className="text-2xl font-bold text-green-700">${card?.amount}</h1>
+                    <small>Expiry: {card?.expiration_date?.split('T')[0]}</small>
                   </aside>
                 })
               }
@@ -189,63 +189,67 @@ const OrderInvoice = () => {
           <p className="dark:text-gray-500 mb-2 text-sm font-bold">PROMO CODES USED</p>
           {loading ? (
             <Loading loading={loading} />
-          ) : (
-            <TableContainer className="">
-              <Table>
-                <TableHeader>
-                  <tr>
-                    <TableCell>{t("Sr")}</TableCell>
-                    <TableCell className="">Code</TableCell>
-                    <TableCell className="text-center">
-                      Discount Type
-                    </TableCell>
-                    <TableCell className="text-center">
-                      Discount
-                    </TableCell>
-                    <TableCell className="text-left">
-                      Min Order Amount
-                    </TableCell>
-                    <TableCell className="text-left">
-                      Status
-                    </TableCell>
-                    <TableCell className="text-right">Apply To</TableCell>
-                  </tr>
-                </TableHeader>
-                <TableBody className="bg-white dark:bg-gray-800 divide-y divide-gray-100 text-serif text-sm ">
-                  {[1,2,3]?.map((item, i) => (
-                    <TableRow key={i} className="dark:border-gray-700 dark:text-gray-400">
-                      <TableCell className="px-6 py-1 whitespace-nowrap font-normal text-gray-500 text-left">
-                        {i + 1}{" "}
-                      </TableCell>
-                      <TableCell onClick={()=>setItem(item)} className="px-4 py-1 whitespace-nowrap text-left font-normal cursor-auto text-blue-400">
-                        <span className="cursor-pointer">{item?.code}SDJF23</span>
-                      </TableCell>
-                      <TableCell className="px-6 py-1 whitespace-nowrap font-bold text-center">
-                        {item.discount_type}{"Percentage "}
-                      </TableCell>
-                      <TableCell className="px-6 py-1 whitespace-nowrap font-bold text-center">
-                        {currency}
-                        {parseFloat(item.discount).toFixed(2)}
-                        34523
-                      </TableCell>
+          ) : <>
+              {
+                data?.gift_cards?.length === 0 ? <p className="text-green-600">No Gift Card Used</p> :
+                <TableContainer className="">
+                  <Table>
+                    <TableHeader>
+                      <tr>
+                        <TableCell>{t("Sr")}</TableCell>
+                        <TableCell className="">Code</TableCell>
+                        <TableCell className="text-center">
+                          Discount Type
+                        </TableCell>
+                        <TableCell className="text-center">
+                          Discount
+                        </TableCell>
+                        <TableCell className="text-left">
+                          Min Order Amount
+                        </TableCell>
+                        <TableCell className="text-left">
+                          Status
+                        </TableCell>
+                        <TableCell className="text-right">Apply To</TableCell>
+                      </tr>
+                    </TableHeader>
+                    <TableBody className="bg-white dark:bg-gray-800 divide-y divide-gray-100 text-serif text-sm ">
+                      {data?.promo_codes?.map((item, i) => (
+                        <TableRow key={i} className="dark:border-gray-700 dark:text-gray-400">
+                          <TableCell className="px-6 py-1 whitespace-nowrap font-normal text-gray-500 text-left">
+                            {i + 1}{" "}
+                          </TableCell>
+                          <TableCell className="px-4 py-1 whitespace-nowrap text-left font-normal cursor-auto text-blue-400">
+                            <span className="cursor-pointer">{item?.code}</span>
+                          </TableCell>
+                          <TableCell className="px-6 py-1 whitespace-nowrap font-bold text-center">
+                            {item.discount_type}
+                          </TableCell>
+                          <TableCell className="px-6 py-1 whitespace-nowrap font-bold text-center">
+                            {currency}
+                            {parseFloat(item.discount).toFixed(2)}
+                            
+                          </TableCell>
 
-                      <TableCell className="px-4 py-1 whitespace-nowrap text-left font-bold">
-                        {currency}{item?.min_order_amount}232234
-                      </TableCell>
+                          <TableCell className="px-4 py-1 whitespace-nowrap text-left font-bold">
+                            {currency}{item?.min_order_amount}
+                          </TableCell>
 
-                      <TableCell className="px-4 py-1 whitespace-nowrap text-left font-bold">
-                        {item?.status}Active
-                      </TableCell>
+                          <TableCell className="px-4 py-1 whitespace-nowrap text-left font-bold">
+                            {item?.status}
+                          </TableCell>
 
-                      <TableCell className="px-6 py-1 whitespace-nowrap text-right font-bold text-red-500 dark:text-green-500">
-                        {item?.apply_to}Order
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          )}
+                          <TableCell className="px-6 py-1 whitespace-nowrap text-right font-bold text-red-500 dark:text-green-500">
+                            {item?.apply_to}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              }
+            </>
+          }
         </div>
 
         {!loading && (
