@@ -71,7 +71,7 @@ const CustomerTable = ({ lang, isCheck, coupons: proofs, setIsCheck, fetchData }
                 </aside>
                 <aside className="flex flex-col">
                     <small>{customer?.first_name} {customer?.last_name}</small>
-                    <small className="">{customer?.email}</small>
+                    <small className="dark:text-gray-400">{customer?.email}</small>
                 </aside>
               </Link>
             </TableCell>

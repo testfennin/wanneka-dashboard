@@ -9,13 +9,13 @@ function Item({item, fetchData, close}) {
     setOrderItem(item)
   },[item])
   return (
-    <Container className='text-gray-100 bg-gray-700 p-4 rounded-lg overflow-y-auto'>
+    <Container className='dark:text-gray-300 bg-gray-700 p-4 rounded-lg overflow-y-auto'>
       <div className="w-full flex tiems-center justify-between mb-4">
         <h1 className=" p-0 m-0">ORDERITEM#{orderItem?.orderitem_id}</h1>
         <small>Quantity: {orderItem?.quantity}</small>
       </div>
       <div className="flex flex-col">
-        <aside className="rounded-lg w-32 h-32 overflow-hidden mb-2">
+        <aside className="rounded-lg w-32 h-32 overflow-hidden mb-2 border shadow">
           <img src={orderItem?.product?.thumbnail} alt='OrderItem-thubnail' className="w-full h-full object-cover"/>
         </aside>
         <small>{orderItem?.product?.name}</small>
@@ -33,6 +33,10 @@ function Item({item, fetchData, close}) {
         </section>
         <br />
         <section className="w-full grid sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6 border border-gray-500 p-4 rounded-lg">
+          <div className="flex flex-col">
+            <small className='text-gray-100'>Has Wanneka Care</small>
+            <small className="text-gray-500">{!orderItem?.order_date ? 'N/A':`${orderItem?.order_date ? 'YES':'NO'}`}</small>
+          </div>
           <div className="flex flex-col">
             <small className='text-gray-100'>Order date</small>
             <small className="text-gray-500">{orderItem?.order_date?.split('T')[0] || 'N/A'}</small>
