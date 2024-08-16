@@ -67,7 +67,10 @@ const CustomerDetails = () => {
               <h1 className="text-2xl font-semibold dark:text-gray-100">{user?.first_name} {user?.last_name}</h1>
               <p>{user?.email}</p>
               <p>{user?.phone}</p>
-              <small className="my-1 text-green-600">({user?.gender})</small>
+              {
+                user?.gender && <small className="my-1 text-green-600">({user?.gender})</small>
+              }
+              
             </aside>
 
             <br />

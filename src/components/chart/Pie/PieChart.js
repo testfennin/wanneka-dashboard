@@ -1,6 +1,7 @@
 import { Pie } from 'react-chartjs-2';
 
 const PieChart = ({ data }) => {
+  console.log(data)
   const PieOption = {
     data: {
       datasets: [
@@ -10,7 +11,7 @@ const PieChart = ({ data }) => {
           label: 'Dataset 1',
         },
       ],
-      labels: data?.map((selling) => selling.sku.slice(0,10)),
+      labels: data?.map((selling) => selling.name),
     },
     options: {
       responsive: true,

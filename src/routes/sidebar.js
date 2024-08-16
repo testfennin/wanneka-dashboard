@@ -5,9 +5,9 @@ import {
   FiCompass,
   FiSettings,
   FiSlack,
-  FiGlobe,
-  FiTarget,
 } from "react-icons/fi";
+import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
+
 import {GrTransaction} from "react-icons/gr"
 
 /**
@@ -87,47 +87,53 @@ const sidebar = [
   },
 
   {
+    path: "/support",
+    icon: IoChatbubbleEllipsesOutline,
+    name: "Suport / Chat",
+  },
+
+  {
     path: "/settings",
     icon: FiSettings,
     name: "StoreSetting",
   },
-  {
-    icon: FiGlobe,
-    name: "International",
-    routes: [
-      {
-        path: "/languages",
-        name: "Languages",
-      },
-      {
-        path: "/currencies",
-        name: "Currencies",
-      },
-    ],
-  },
-  {
-    icon: FiTarget,
-    name: "ViewStore",
-    path: "http://localhost:3000",
-    outside: "store",
-  },
+  // {
+  //   icon: FiGlobe,
+  //   name: "International",
+  //   routes: [
+  //     {
+  //       path: "/languages",
+  //       name: "Languages",
+  //     },
+  //     {
+  //       path: "/currencies",
+  //       name: "Currencies",
+  //     },
+  //   ],
+  // },
+  // {
+  //   icon: FiTarget,
+  //   name: "ViewStore",
+  //   path: "http://localhost:3000",
+  //   outside: "store",
+  // },
 
-  {
-    icon: FiSlack,
-    name: "Pages",
-    routes: [
-      // submenu
+  // {
+  //   icon: FiSlack,
+  //   name: "Pages",
+  //   routes: [
+  //     // submenu
 
-      {
-        path: "/404",
-        name: "404",
-      },
-      {
-        path: "/coming-soon",
-        name: "Coming Soon",
-      },
-    ],
-  },
+  //     {
+  //       path: "/404",
+  //       name: "404",
+  //     },
+  //     {
+  //       path: "/coming-soon",
+  //       name: "Coming Soon",
+  //     },
+  //   ],
+  // },
 ];
 
 export default sidebar;

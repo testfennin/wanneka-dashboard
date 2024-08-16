@@ -10,9 +10,8 @@ import {
 import { useState } from "react";
 import {Link} from 'react-router-dom'
 import DeleteModal from "components/modal/DeleteModal";
-import CouponDrawer from "components/drawer/CouponDrawer";
-import CheckBox from "components/form/CheckBox";
 import ModalWrapper from "components/common/ModalWrapper";
+import CustomerDrawer from "./CustomerDrawer";
 
 
 export const walletStatus = {
@@ -22,17 +21,16 @@ export const walletStatus = {
 
 const CustomerTable = ({ lang, isCheck, coupons: proofs, setIsCheck, fetchData }) => {
 
-  const handleClick = (e) => {
-    const { id, checked } = e.target;
-    setIsCheck([...isCheck, id]);
-    if (!checked) {
-      setIsCheck(isCheck.filter((item) => item !== id));
-    }
-  };
+  // const handleClick = (e) => {
+  //   const { id, checked } = e.target;
+  //   setIsCheck([...isCheck, id]);
+  //   if (!checked) {
+  //     setIsCheck(isCheck.filter((item) => item !== id));
+  //   }
+  // };
 
 
   const [isEdit, setEdit] = useState('')
-  const [data] = useState({})
   const [isDelete, setDelete] = useState(null);
   const [deleteTitle, setDeleteTitle] = useState('')
 
@@ -45,13 +43,13 @@ const CustomerTable = ({ lang, isCheck, coupons: proofs, setIsCheck, fetchData }
       }
 
       {
-        isEdit && <ModalWrapper close={()=>setEdit('')} content={<CouponDrawer data={data} fetchData={()=>fetchData()} close={()=>setEdit('')} id={isEdit} lang={lang} />}/>
+        isEdit && <ModalWrapper center close={()=>setEdit('')} content={<CustomerDrawer data={isEdit} fetchData={()=>fetchData()} close={()=>setEdit('')} lang={lang} />}/>
       }
 
       <TableBody>
         {proofs?.map((customer, i) => (
           <TableRow key={i + 1} className="text-sm " >
-            <TableCell>
+            {/* <TableCell>
               <CheckBox
                 type="checkbox"
                 name={customer?.title?.en}
@@ -59,7 +57,7 @@ const CustomerTable = ({ lang, isCheck, coupons: proofs, setIsCheck, fetchData }
                 handleClick={handleClick}
                 isChecked={isCheck?.includes(customer.uid)}
               />
-            </TableCell>
+            </TableCell> */}
 
             <TableCell>
               <Link to={`/customer/${customer.uid}`} className="flex items-center text-blue-500">
@@ -96,10 +94,11 @@ const CustomerTable = ({ lang, isCheck, coupons: proofs, setIsCheck, fetchData }
             <TableCell>
                 <small>{customer.provider || 'N/A'}</small>
             </TableCell>
-            
-            <TableCell className="text-cnter">
-                <small>{customer.user_type}</small>
+
+            <TableCell>
+                <small className={`${!customer?.is_suspended ? 'text-green-600':'text-red-600'}`}>{customer?.is_suspended ? 'YES':'NO'}</small>
             </TableCell>
+
             <TableCell>
                 <small>{customer.created_at?.split('T')[0]}</small>
             </TableCell>
@@ -107,7 +106,7 @@ const CustomerTable = ({ lang, isCheck, coupons: proofs, setIsCheck, fetchData }
             <TableCell>
               <div className="flex items-center justify-end">
                 <i onClick={()=>{
-                    setEdit(customer.uid)
+                    setEdit(customer)
                 }} className="fa fa-edit mr-4 cursor-pointer hover:text-green-600"></i>
                 <i onClick={()=>{
                     setDelete(customer.uid)

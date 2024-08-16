@@ -33,10 +33,7 @@ function Item({item, fetchData, close}) {
         </section>
         <br />
         <section className="w-full grid sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6 border border-gray-500 p-4 rounded-lg">
-          <div className="flex flex-col">
-            <small className='text-gray-100'>Has Wanneka Care</small>
-            <small className="text-gray-500">{!orderItem?.order_date ? 'N/A':`${orderItem?.order_date ? 'YES':'NO'}`}</small>
-          </div>
+
           <div className="flex flex-col">
             <small className='text-gray-100'>Order date</small>
             <small className="text-gray-500">{orderItem?.order_date?.split('T')[0] || 'N/A'}</small>

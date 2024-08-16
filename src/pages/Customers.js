@@ -10,14 +10,13 @@ import {
   TableHeader,
 } from "@windmill/react-ui";
 import { useContext, useEffect, useState } from "react";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { FiTrash2 } from "react-icons/fi";
 
 import { useTranslation } from "react-i18next";
 import { SidebarContext } from "context/SidebarContext";
 import useFilter from "hooks/useFilter";
 import PageTitle from "components/Typography/PageTitle";
 import DeleteModal from "components/modal/DeleteModal";
-import CheckBox from "components/form/CheckBox";
 import NotFound from "components/table/NotFound";
 import UploadManyTwo from 'components/common/UploadManyTwo';
 import ModalWrapper from "components/common/ModalWrapper";
@@ -33,7 +32,7 @@ const Customers = () => {
   const [display, setDisplay] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchData = async (page = 0, params = {}, load = false) => {
+  const fetchData = async (page = 0, params = null, load = false) => {
     if (load) setLoading(true);
     
     try {
@@ -52,7 +51,7 @@ const Customers = () => {
     fetchData(0, {}, true);
   }, []);
 
-  const [isCheckAll, setIsCheckAll] = useState(false);
+  // const [isCheckAll, setIsCheckAll] = useState(false);
   const [isCheck, setIsCheck] = useState([]);
 
   const {
@@ -64,14 +63,14 @@ const Customers = () => {
     handleRemoveSelectFile,
   } = useFilter(data);
 
-  const handleSelectAll = () => {
-    setIsCheckAll(!isCheckAll);
-    if (!isCheckAll) {
-      setIsCheck(data.results?.map((li) => li.uid));
-    } else {
-      setIsCheck([]);
-    }
-  };
+  // const handleSelectAll = () => {
+  //   setIsCheckAll(!isCheckAll);
+  //   if (!isCheckAll) {
+  //     setIsCheck(data.results?.map((li) => li.uid));
+  //   } else {
+  //     setIsCheck([]);
+  //   }
+  // };
 
   const { t } = useTranslation();
 
@@ -80,38 +79,42 @@ const Customers = () => {
   const [isBulkUpdate, setBulkUpdate] = useState(false);
 
   const handleDeleteMany = () => setBulkDelete(true);
-  const handleUpdateMany = () => setBulkUpdate(true);
+  // const handleUpdateMany = () => setBulkUpdate(true);
 
   const [search, setSearch] = useState('');
-  useEffect(() => {
-    if (search.length > 0) {
-      const searchText = search.toLowerCase();
-      const filteredResults = data.results?.filter(user => {
-        const userFirstName = user?.first_name?.toLowerCase() || '';
-        const userLastName = user?.last_name?.toLowerCase() || '';
-        const userEmail = user?.email?.toLowerCase() || '';
-        const phone = user.phone?.toLowerCase() || '';
-        const gender = user.gender?.toLowerCase() || '';
-        const user_type = user.user_type?.toLowerCase() || '';
-        const provider = user.provider?.toString() || '';
+  // useEffect(() => {
+  //   if (search.length > 0) {
+  //     const searchText = search.toLowerCase();
+  //     const filteredResults = data.results?.filter(user => {
+  //       const userFirstName = user?.first_name?.toLowerCase() || '';
+  //       const userLastName = user?.last_name?.toLowerCase() || '';
+  //       const userEmail = user?.email?.toLowerCase() || '';
+  //       const phone = user.phone?.toLowerCase() || '';
+  //       const gender = user.gender?.toLowerCase() || '';
+  //       const user_type = user.user_type?.toLowerCase() || '';
+  //       const provider = user.provider?.toString() || '';
 
-        return userFirstName.includes(searchText) ||
-               userLastName.includes(searchText) ||
-               userEmail.includes(searchText) ||
-               phone.includes(searchText) ||
-               gender.includes(searchText) ||
-               user_type.includes(searchText) ||
-               provider.includes(searchText);
-      });
-      setDisplay(filteredResults.length > 0 ? filteredResults : data.results);
-    } else {
-      setDisplay(data.results);
-    }
-  }, [search, data.results]);
+  //       return userFirstName.includes(searchText) ||
+  //              userLastName.includes(searchText) ||
+  //              userEmail.includes(searchText) ||
+  //              phone.includes(searchText) ||
+  //              gender.includes(searchText) ||
+  //              user_type.includes(searchText) ||
+  //              provider.includes(searchText);
+  //     });
+  //     setDisplay(filteredResults.length > 0 ? filteredResults : data.results);
+  //   } else {
+  //     setDisplay(data.results);
+  //   }
+  // }, [search, data.results]);
+
+  const handleSearch = () => {
+    fetchData(null, `&search=${search}`)
+  }
 
   return (
     <>
-      <PageTitle>Transactions - Payment Proofs</PageTitle>
+      <PageTitle>Customers</PageTitle>
 
       {isBulkUpdate && (
         <ModalWrapper
@@ -176,7 +179,7 @@ const Customers = () => {
             </div>
 
             <div className="lg:flex md:flex xl:justify-end xl:w-1/2 md:w-full md:justify-start flex-grow-0">
-              <div className="w-full md:w-40 lg:w-40 xl:w-40 mr-3 mb-3 lg:mb-0">
+              {/* <div className="w-full md:w-40 lg:w-40 xl:w-40 mr-3 mb-3 lg:mb-0">
                 <Button
                   disabled={isCheck.length < 1}
                   onClick={handleUpdateMany}
@@ -187,7 +190,7 @@ const Customers = () => {
                   </span>
                   {t("BulkAction")}
                 </Button>
-              </div>
+              </div> */}
 
               <div className="w-full md:w-32 lg:w-32 xl:w-32 mr-3 mb-3 lg:mb-0">
                 <Button
@@ -217,21 +220,31 @@ const Customers = () => {
 
       <Card className="min-w-0 shadow-xs overflow-hidden bg-white dark:bg-gray-800 mb-5">
         <CardBody>
-          <div className="w-full flex items-center border border-gray-500 rounded-lg px-4">
+          <div className="w-full flex items-center border border-gray-500 rounded-lg px-4 mb-4">
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               type="text"
-              placeholder="Search by customer's name, gender, phone number, email, provider or user type"
+              placeholder="Search by customer's name, gender, phone number, email or provider"
               className="text-sm outline-none bg-transparent border-none text-gray-500 dark:text-gray-100 w-full h-10"
             />
             {search.length > 0 && (
               <i
-                onClick={() => setSearch('')}
+                onClick={() => {
+                  setSearch('');
+                  fetchData()
+                }}
                 className="cursor-pointer fa fa-times text-gray-500 dark:text-gray-100"
               />
             )}
           </div>
+          <section className="flex">
+            <button onClick={()=>handleSearch()} className="rounded-lg bg-green-500 text-white px-10 h-10 mr-2">Search</button>
+            <button onClick={()=>{
+              fetchData();
+              setSearch('')
+            }} className="rounded-lg bg-gray-400 px-10 h-10">Clear Search</button>
+          </section>
         </CardBody>
       </Card>
 
@@ -243,7 +256,7 @@ const Customers = () => {
           <Table>
             <TableHeader>
               <tr>
-                <TableCell>
+                {/* <TableCell>
                   <CheckBox
                     type="checkbox"
                     name="selectAll"
@@ -251,14 +264,14 @@ const Customers = () => {
                     handleClick={handleSelectAll}
                     isChecked={isCheckAll}
                   />
-                </TableCell>
+                </TableCell> */}
                 <TableCell>CUSTOMER</TableCell>
                 <TableCell>EMAIL VERIFIED</TableCell>
                 <TableCell>GENDER</TableCell>
                 <TableCell>PHONE</TableCell>
                 <TableCell>PHONE VERIFIED</TableCell>
                 <TableCell>PROVIDER</TableCell>
-                <TableCell>USER TYPE</TableCell>
+                <TableCell>SUSPENDED</TableCell>
                 <TableCell>DATE JOINED</TableCell>
                 <TableCell className="text-right">{t("CoupTblActions")}</TableCell>
               </tr>

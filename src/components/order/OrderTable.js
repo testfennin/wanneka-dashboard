@@ -3,6 +3,7 @@ import PrintReceipt from "components/form/PrintReceipt";
 import SelectStatus from "components/form/SelectStatus";
 import Status from "components/table/Status";
 import Tooltip from "components/tooltip/Tooltip";
+import { orderTransStatus } from "components/Transactions/OrdersTransactionTable";
 import { useTranslation } from "react-i18next";
 import { FiZoomIn } from "react-icons/fi";
 import { Link } from "react-router-dom";
@@ -10,6 +11,7 @@ import { Link } from "react-router-dom";
 const OrderTable = ({ orders, currency, globalSetting, fetchData }) => {
   // console.log('globalSetting',globalSetting)
   const { t } = useTranslation();
+  console.log(orderTransStatus)
 
   return (
     <>

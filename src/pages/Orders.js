@@ -29,10 +29,22 @@ import { notifyError } from "utils/toast";
 import spinnerLoadingImage from "assets/img/spinner.gif";
 import { orderStatuses } from "components/form/SelectStatus";
 
+
+export const orderItemStatus = {
+  pending: 'Pending', 
+  confirmed: 'Confirmed', 
+  processing: 'Processing', 
+  awaiting_shipping: 'Awaiting Shipping', 
+  shipped: 'Shipped', 
+  delivered: 'Delivered', 
+  cancelled: 'Cancelled', 
+  returned: 'Returned'
+}
+
 const Orders = () => {
   const {
     // setStatus,
-    handleChangePage,
+    // handleChangePage,
     handleSubmitForAll,
     setStartDate,
     setEndDate,
@@ -50,16 +62,15 @@ const Orders = () => {
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('');
 
-  const fetchData =async () => {
-    const orderData = await OrderServices.getAllOrders();
-    // setData(orderData)
+  const fetchData =async (page = 0, params = null,) => {
+    const orderData = await OrderServices.getAllOrders(page, params);
     console.log(orderData);
     setData(orderData)
     setFilterData(orderData.results)
   }
 
   const fetchByLimit = async (limit) =>{
-    const orderData = await OrderServices.getAllOrders(limit);
+    const orderData = await OrderServices.getAllOrders(null, `&limit=${limit}`);
     setFilterData(orderData.results)
   }
 
@@ -97,21 +108,6 @@ const Orders = () => {
       notifyError(err ? err?.response?.data?.message : err.message);
     }
   };
-  
-
-  // useEffect(()=>{
-  //   if(search.length>2){
-  //     let currentData = [...filterData];
-  //     let res = currentData.filter(order=>JSON.stringify(order).toLowerCase().includes(search.toLowerCase()));
-  //     if(res.length>0){
-  //       setFilterData(res)
-  //     }else{
-  //       setFilterData(data?.results)
-  //     }
-  //   }else{
-  //     setFilterData(data?.results)
-  //   }
-  // },[search])
 
   useEffect(()=>{
     if(filterData.length === 0){
@@ -297,7 +293,7 @@ const Orders = () => {
             <Pagination
               totalResults={data?.count}
               resultsPerPage={10}
-              onChange={handleChangePage}
+              onChange={(p) => fetchData(p > 1 ? (10 * p - 10) : 0)}
               label="Table navigation"
             />
           </TableFooter>

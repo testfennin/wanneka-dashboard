@@ -26,7 +26,7 @@ import PageTitle from "components/Typography/PageTitle";
 import InvoiceForDownload from "components/invoice/InvoiceForDownload";
 import SettingServices from "services/SettingServices";
 import { useTranslation } from "react-i18next";
-import { giftcardStatus } from "components/GiftCard/GiftCardTable";
+// import { giftcardStatus } from "components/GiftCard/GiftCardTable";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 
 const OrderInvoice = () => {
@@ -132,34 +132,39 @@ const OrderInvoice = () => {
           <p className="dark:text-gray-500 mb-2 text-sm font-bold">ORDER ITEMS</p>
           {loading ? (
             <Loading loading={loading} />
-          ) : (
-            <TableContainer className="">
-              <Table>
-                <TableHeader>
-                  <tr>
-                    <TableCell>{t("Sr")}</TableCell>
-                    <TableCell className="">Product Title</TableCell>
-                    <TableCell className="text-center">
-                      {t("Quantity")}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {t("ItemPrice")}
-                    </TableCell>
-                    <TableCell className="text-left">
-                      {t("Status")}
-                    </TableCell>
-                    <TableCell className="text-right">{t("Amount")}</TableCell>
-                  </tr>
-                </TableHeader>
-                <Invoice
-                  data={data?.items}
-                  currency={currency}
-                  globalSetting={globalSetting}
-                  fetchData={fetchData}
-                />
-              </Table>
-            </TableContainer>
-          )}
+          ) : 
+            <>
+              {
+                data?.items?.length > 0 ? <TableContainer className="">
+                  <Table>
+                    <TableHeader>
+                      <tr>
+                        <TableCell>{t("Sr")}</TableCell>
+                        <TableCell className="">Product Title</TableCell>
+                        <TableCell className="text-center">
+                          {t("Quantity")}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          {t("ItemPrice")}
+                        </TableCell>
+                        <TableCell className="text-left">
+                          {t("Status")}
+                        </TableCell>
+                        <TableCell className="text-right">{t("Amount")}</TableCell>
+                      </tr>
+                    </TableHeader>
+                    <Invoice
+                      data={data?.items}
+                      currency={currency}
+                      globalSetting={globalSetting}
+                      fetchData={fetchData}
+                    />
+                  </Table>
+                </TableContainer> : 
+                <p className="text-green-600">No Items here</p>
+              }
+            </>
+          }
         </div>
 
         <div className="my-8">
@@ -173,10 +178,10 @@ const OrderInvoice = () => {
                   return <aside key={`order-gift-cards-${idx}`} className=" dark:border-gray-500 dark:text-gray-800 dark:bg-gray-300 bg-gray-100 shadow flex flex-col rounded-xl p-4">
                     <div className="w-full flex items-center justify-between mb-3">
                       <Link to={`/gift-cards/${card?.uid}`}>#{card?.access_code}</Link>
-                      <small>{giftcardStatus[card?.status]}</small>
+                      {/* <small>{giftcardStatus[card?.status]}</small> */}
                     </div>
                     <h1 className="text-2xl font-bold text-green-700">${card?.amount}</h1>
-                    <small>Expiry: {card?.expiration_date?.split('T')[0]}</small>
+                    {/* <small>Expiry: {card?.expiration_date?.split('T')[0]}</small> */}
                   </aside>
                 })
               }
@@ -191,7 +196,7 @@ const OrderInvoice = () => {
             <Loading loading={loading} />
           ) : <>
               {
-                data?.gift_cards?.length === 0 ? <p className="text-green-600">No Gift Card Used</p> :
+                data?.promo_codes?.length === 0 ? <p className="text-green-600">No Gift Card Used</p> :
                 <TableContainer className="">
                   <Table>
                     <TableHeader>
@@ -254,7 +259,7 @@ const OrderInvoice = () => {
 
         {!loading && (
           <div className="border rounded-xl border-gray-100 p-8 py-6 bg-gray-50 dark:bg-gray-900 dark:border-gray-800">
-            <div className="flex lg:flex-row md:flex-row flex-col justify-between">
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
               <div className="mb-3 md:mb-0 lg:mb-0  flex flex-col sm:flex-wrap">
                 <span className="mb-1 font-bold font-serif text-sm uppercase text-gray-600 dark:text-gray-500 block">
                   {t("InvoicepaymentMethod")}
@@ -274,13 +279,50 @@ const OrderInvoice = () => {
               </div>
               <div className="mb-3 md:mb-0 lg:mb-0  flex flex-col sm:flex-wrap">
                 <span className="mb-1 font-bold font-serif text-sm uppercase text-gray-600 dark:text-gray-500 block">
-                  {t("InvoiceDicount")}
+                  Promo Code Discount
                 </span>
                 <span className="text-sm text-gray-500 dark:text-gray-400 font-semibold font-serif block">
                   {currency}
-                  {data.discount ? parseFloat(data.discount).toFixed(2) : 0}
+                  {data.promo_code_discount ? parseFloat(data.promo_code_discount).toFixed(2) : 0}
                 </span>
               </div>
+              <div className="mb-3 md:mb-0 lg:mb-0  flex flex-col sm:flex-wrap">
+                <span className="mb-1 font-bold font-serif text-sm uppercase text-gray-600 dark:text-gray-500 block">
+                  Gift Card Discount
+                </span>
+                <span className="text-sm text-gray-500 dark:text-gray-400 font-semibold font-serif block">
+                  {currency}
+                  {data.giftcard_discount ? parseFloat(data.giftcard_discount).toFixed(2) : 0}
+                </span>
+              </div>
+              <div className="mb-3 md:mb-0 lg:mb-0  flex flex-col sm:flex-wrap">
+                <span className="mb-1 font-bold font-serif text-sm uppercase text-gray-600 dark:text-gray-500 block">
+                  Wallet Balance Used
+                </span>
+                <span className="text-sm text-gray-500 dark:text-gray-400 font-semibold font-serif block">
+                  {currency}
+                  {data.wallet_balance_used ? parseFloat(data.wallet_balance_used).toFixed(2) : 0}
+                </span>
+              </div>
+              <div className="mb-3 md:mb-0 lg:mb-0  flex flex-col sm:flex-wrap">
+                <span className="mb-1 font-bold font-serif text-sm uppercase text-gray-600 dark:text-gray-500 block">
+                  Wanneka Care
+                </span>
+                <span className="text-sm text-gray-500 dark:text-gray-400 font-semibold font-serif block">
+                  {currency}
+                  {data.wanneka_care_amount ? parseFloat(data.wanneka_care_amount).toFixed(2) : 0}
+                </span>
+              </div>
+              <div className="mb-3 md:mb-0 lg:mb-0  flex flex-col sm:flex-wrap">
+                <span className="mb-1 font-bold font-serif text-sm uppercase text-gray-600 dark:text-gray-500 block">
+                  Amount Paid
+                </span>
+                <span className=" text-orange-500 dark:text-orange-400 font-semibold font-serif block">
+                  {currency}
+                  {data.amount_paid ? parseFloat(data.amount_paid).toFixed(2) : 0}
+                </span>
+              </div>
+
               <div className="flex flex-col sm:flex-wrap">
                 <span className="mb-1 font-bold font-serif text-sm uppercase text-gray-600 dark:text-gray-500 block">
                   {t("InvoiceTotalAmount")}

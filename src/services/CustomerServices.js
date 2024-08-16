@@ -5,7 +5,7 @@ import { baseUrl } from "./AdminServices";
 const CustomerServices = {
   getAllCustomers: async (page, params) => {
         try {
-            let url = `${baseUrl}/customers?offset=${page}`;
+            let url = `${baseUrl}/customers?offset=${page||0}`;
             if (params) url += params
             return await axiosInstance.get(url);
         } catch (err) {

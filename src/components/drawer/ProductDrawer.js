@@ -66,7 +66,6 @@ const ProductDrawer = ({ id, close, fetchData }) => {
   });
   const [classicImg, setClassicImg] = useState('')
   const [thumbnail, setThumbnail] = useState('')
-  const [moreDetails, setMoreDetails] = useState(false)
 
   const [categories, setCategories] = useState([])
   const [styles, setStyles] = useState([])
@@ -133,7 +132,6 @@ const ProductDrawer = ({ id, close, fetchData }) => {
   }
 
   useEffect(()=>{
-    setMoreDetails(id?true:false)
     getCategories();
     getStyles();
     // eslint-disable-next-line
@@ -334,132 +332,130 @@ const ProductDrawer = ({ id, close, fetchData }) => {
               </div>
 
               <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-                <LabelArea label={t("SalePrice")} />
+                <LabelArea label={`Weight`} />
                 <div className="col-span-8 sm:col-span-4">
                   <aside className="flex items-center h-12 border rounded-lg overflow-hidden">
-                    <div className="h-full px-4 flex items-center justify-center border-r">$</div>
-                    <input value={details.sale_price} onChange={e=>setDetails({...details, sale_price: e.target.value})} name="sku"
+                    <input value={details.weight} onChange={e=>setDetails({...details, weight: e.target.value})} name="weight"
                     type="number"
-                    placeholder={t("SalePrice")} className="rounded-lg px-3 h-12 text-sm focus:outline-none block w-full bg-transparent" />
+                    placeholder={`Product weight`} className="rounded-lg px-3 h-12 text-sm focus:outline-none block w-full bg-transparent" />
                   </aside>
                   <Error errorName={errors.price} />
                 </div>
               </div>
 
-              {
-                !id && <div onClick={()=>{
-                  setMoreDetails(!moreDetails)
-                  scrollBottom();
-                }} className="w-full flex items-center cursor-pointer mb-8 mt-2">
-                  <p>Add More Details</p>
-                  <hr className="w-full mx-2 border-gray-600" />
-                  <i className={`fa ${moreDetails ? 'fa-chevron-up':'fa-chevron-down'}`}></i>
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label={`Length`} />
+                <div className="col-span-8 sm:col-span-4">
+                  <aside className="flex items-center h-12 border rounded-lg overflow-hidden">
+                    <input value={details.length} onChange={e=>setDetails({...details, length: e.target.value})} name="length"
+                    type="number"
+                    placeholder={`Product length`} className="rounded-lg px-3 h-12 text-sm focus:outline-none block w-full bg-transparent" />
+                  </aside>
+                  <Error errorName={errors.price} />
                 </div>
-              }
+              </div>
               
-              
-              {
-                moreDetails && <>
-                  <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-                    <LabelArea label={"Discount Type"} />
-                    <div className="col-span-8 sm:col-span-4">
-                      <select value={details.discount_type} onChange={e=>setDetails({...details, discount_type: e.target.value})} name="" id="" className="border rounded-lg px-3 h-12 text-sm focus:outline-none block w-full bg-transparent">
-                        <option>Select discount type</option>
-                        <option value={'percentage'}>Percentage</option>
-                        <option value={'amount'}>Amount</option>
-                      </select>
-                    </div>
+              <>
+                <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                  <LabelArea label={"Discount Type"} />
+                  <div className="col-span-8 sm:col-span-4">
+                    <select value={details.discount_type} onChange={e=>setDetails({...details, discount_type: e.target.value})} name="" id="" className="border rounded-lg px-3 h-12 text-sm focus:outline-none block w-full bg-transparent">
+                      <option>Select discount type</option>
+                      <option value={'percentage'}>Percentage</option>
+                      <option value={'amount'}>Amount</option>
+                    </select>
                   </div>
+                </div>
 
-                  <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6 relative">
-                    <LabelArea label={"Discount"} />
-                    <div className="col-span-8 sm:col-span-4">
-                      <input value={details.discount} onChange={e=>setDetails({...details, discount: e.target.value})} name="sku"
-                        type="number"
-                        placeholder={"Product discount"} className="border rounded-lg px-3 h-12 text-sm focus:outline-none block w-full bg-transparent" />
-                    </div>
+                <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6 relative">
+                  <LabelArea label={"Discount"} />
+                  <div className="col-span-8 sm:col-span-4">
+                    <input value={details.discount} onChange={e=>setDetails({...details, discount: e.target.value})} name="sku"
+                      type="number"
+                      placeholder={"Product discount"} className="border rounded-lg px-3 h-12 text-sm focus:outline-none block w-full bg-transparent" />
                   </div>
+                </div>
 
-                  <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-                    <LabelArea label={'Styles'} />
-                    <div className="col-span-8 sm:col-span-4 flex flex-wrap">
-                      {
-                        styles.map((style, idx)=><div onClick={()=>{
-                          let currentStyles = [...details.styles];
-                          if(JSON.stringify(currentStyles)?.includes(style.uid)){
-                            let newStyles = currentStyles.filter(addedStyle=>addedStyle.uid !== style.uid);
-                            setDetails(prev=>{
-                              return {...prev, styles:newStyles}
-                            })
-                          }else{
-                            setDetails(prev=>{
-                              return {...prev, styles:[...details.styles, style]}
-                            })
-                          }
-                        }} key={`style-${idx}`} className={`px-4 h-8 text-sm cursor-pointer hover:text-white ${JSON.stringify(details.styles)?.includes(style.uid) ? `bg-green-500 text-white border-none`:`text-gray-400`} flex items-center rounded-2xl mr-2 mb-2 border border-gray-500`}>{style?.name}</div>)
-                      }
-                    </div>
-                  </div>
-
-                  <div className="w-full grid sm:grid-cols-4 gap-3 mb-6 border p-4 rounded-lg">
-                    <aside className="flex items-center">
-                      <div className="overflow-hidden rounded-lg">
-                        <input checked={details?.is_classic} onChange={e=>{
-                          setDetails({...details, is_classic:e.target.checked});
-                          scrollBottom();
-                        }} type="checkbox" name="" id="" className="mr-2 w-5 h-5" />
-                      </div>
-                      <p>Classic</p>
-                    </aside>
-                    <aside className="flex items-center">
-                      <div className="overflow-hidden rounded-lg">
-                        <input checked={details?.is_featured} onChange={e=>setDetails({...details, is_featured:e.target.checked})} type="checkbox" name="" id="" className="mr-2 w-5 h-5" />
-                      </div>
-                      <p>Featured</p>
-                    </aside>
-                    <aside className="flex items-center">
-                      <div className="overflow-hidden rounded-lg">
-                        <input checked={details?.in_stock} onChange={e=>setDetails({...details, in_stock:e.target.checked})} type="checkbox" name="" id="" className="mr-2 w-5 h-5" />
-                      </div>
-                      <p>In Stock</p>
-                    </aside>
-                    <aside className="flex items-center">
-                      <div className="overflow-hidden rounded-lg">
-                        <input checked={details?.is_active} onChange={e=>setDetails({...details, is_active:e.target.checked})} type="checkbox" name="" id="" className="mr-2 w-5 h-5" />
-                      </div>
-                      <p>Active/Publish</p>
-                    </aside>
-                  </div>
-
-                  {
-                    details.is_classic && <>
-                    <br />
-                    <div className="pb-1 flex items-end justify-between border-b border-gray-500 text-xl">
-                      <p>Classic Product Detail</p>
-                      <small className="text-gray-500">You're seeing this because this product is a classic product.</small>
-                    </div>
-                    <div className="w-full my-3 mb-6 flex md:flex-row flex-col">
-                      <ClassicImage className="mr-4 bg-gray-300 relative rounded-xl flex justify-center items-center overflow-hidden">
-                        {
-                          classicImg ? <img src={classicImg||details.image} alt="product" className="w-full h-full object-cover"/> :
-                          <i className="fa fa-camera text-4xl"></i>
+                <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                  <LabelArea label={'Styles'} />
+                  <div className="col-span-8 sm:col-span-4 flex flex-wrap">
+                    {
+                      styles.map((style, idx)=><div onClick={()=>{
+                        let currentStyles = [...details.styles];
+                        if(JSON.stringify(currentStyles)?.includes(style.uid)){
+                          let newStyles = currentStyles.filter(addedStyle=>addedStyle.uid !== style.uid);
+                          setDetails(prev=>{
+                            return {...prev, styles:newStyles}
+                          })
+                        }else{
+                          setDetails(prev=>{
+                            return {...prev, styles:[...details.styles, style]}
+                          })
                         }
-                        <input type="file" onChange={e=>handleImageChange(e)} name="" id="" className="w-full h-full absolute opacity-0" />
-                      </ClassicImage>
-                      <div className="w-full flex flex-col">
-                        <small className="text-gray-400">Product Title</small>
-                        <input required={details.is_classic} value={details.title} onChange={e=>setDetails({...details, title: e.target.value})} type="text" placeholder={'Classic product title'} className="mb-4 border border-gray-500 rounded-lg px-3 h-12 text-sm focus:outline-none block w-full bg-transparent" />
+                      }} key={`style-${idx}`} className={`px-4 h-8 text-sm cursor-pointer hover:text-white ${JSON.stringify(details.styles)?.includes(style.uid) ? `bg-green-500 text-white border-none`:`text-gray-400`} flex items-center rounded-2xl mr-2 mb-2 border border-gray-500`}>{style?.name}</div>)
+                    }
+                  </div>
+                </div>
 
-                        <small className="text-gray-400">Product Content</small>
-                        <input required={details.is_classic} value={details.content} onChange={e=>setDetails({...details, content: e.target.value})} type="text" placeholder={'Classic product content'} className="mb-4 border border-gray-500 rounded-lg px-3 h-12 text-sm focus:outline-none block w-full bg-transparent" />
-                      </div>
+                <div className="w-full grid sm:grid-cols-4 gap-3 mb-6 border p-4 rounded-lg">
+                  <aside className="flex items-center">
+                    <div className="overflow-hidden rounded-lg">
+                      <input checked={details?.is_classic} onChange={e=>{
+                        setDetails({...details, is_classic:e.target.checked});
+                        scrollBottom();
+                      }} type="checkbox" name="" id="" className="mr-2 w-5 h-5" />
                     </div>
-                    <br />
-                    </>
-                  }
-              
-                </>
-              }
+                    <p>Classic</p>
+                  </aside>
+                  <aside className="flex items-center">
+                    <div className="overflow-hidden rounded-lg">
+                      <input checked={details?.is_featured} onChange={e=>setDetails({...details, is_featured:e.target.checked})} type="checkbox" name="" id="" className="mr-2 w-5 h-5" />
+                    </div>
+                    <p>Featured</p>
+                  </aside>
+                  <aside className="flex items-center">
+                    <div className="overflow-hidden rounded-lg">
+                      <input checked={details?.in_stock} onChange={e=>setDetails({...details, in_stock:e.target.checked})} type="checkbox" name="" id="" className="mr-2 w-5 h-5" />
+                    </div>
+                    <p>In Stock</p>
+                  </aside>
+                  <aside className="flex items-center">
+                    <div className="overflow-hidden rounded-lg">
+                      <input checked={details?.is_active} onChange={e=>setDetails({...details, is_active:e.target.checked})} type="checkbox" name="" id="" className="mr-2 w-5 h-5" />
+                    </div>
+                    <p>Active/Publish</p>
+                  </aside>
+                </div>
+
+                {
+                  details.is_classic && <>
+                  <br />
+                  <div className="pb-1 flex items-end justify-between border-b border-gray-500 text-xl">
+                    <p>Classic Product Detail</p>
+                    <small className="text-gray-500">You're seeing this because this product is a classic product.</small>
+                  </div>
+                  <div className="w-full my-3 mb-6 flex md:flex-row flex-col">
+                    <ClassicImage className="mr-4 bg-gray-300 relative rounded-xl flex justify-center items-center overflow-hidden">
+                      {
+                        classicImg ? <img src={classicImg||details.image} alt="product" className="w-full h-full object-cover"/> :
+                        <i className="fa fa-camera text-4xl"></i>
+                      }
+                      <input type="file" onChange={e=>handleImageChange(e)} name="" id="" className="w-full h-full absolute opacity-0" />
+                    </ClassicImage>
+                    <div className="w-full flex flex-col">
+                      <small className="text-gray-400">Product Title</small>
+                      <input required={details.is_classic} value={details.title} onChange={e=>setDetails({...details, title: e.target.value})} type="text" placeholder={'Classic product title'} className="mb-4 border border-gray-500 rounded-lg px-3 h-12 text-sm focus:outline-none block w-full bg-transparent" />
+
+                      <small className="text-gray-400">Product Content</small>
+                      <input required={details.is_classic} value={details.content} onChange={e=>setDetails({...details, content: e.target.value})} type="text" placeholder={'Classic product content'} className="mb-4 border border-gray-500 rounded-lg px-3 h-12 text-sm focus:outline-none block w-full bg-transparent" />
+                    </div>
+                  </div>
+                  <br />
+                  </>
+                }
+            
+              </>
+
             </div>
           )}
 

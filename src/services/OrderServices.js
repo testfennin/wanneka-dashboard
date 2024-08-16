@@ -3,10 +3,12 @@ import requests from "./httpService";
 import { baseUrl } from "./AdminServices";
 
 const OrderServices = {
-  getAllOrders: async (limit)=>{
+  getAllOrders: async (page, params)=>{
     try{
-      const res = await axiosInstance.get(`/orders/${limit ? `?limit=${limit}`:''}`);
-      return res.data;
+      let url = `${baseUrl}/orders?offset=${page}`;
+      if (params) url += params;
+      let res = await axiosInstance.get(url);
+      return res.data
     }catch(err){
       return err
     }

@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { transactionType } from "pages/Transactions";
 import { walletStatus } from "components/Transactions/WalletsTransactionTable";
 import { proofStatus } from "components/Transactions/Proofs";
+import { orderItemStatus } from "pages/Orders";
 
 export const orderStatuses = (type) => {
   return type === 'item' ? {
@@ -96,6 +97,10 @@ const SelectStatus = ({ id, order, card, transaction, fetchData, item }) => {
           }) : card ?  Object.keys(giftcardStatus).map((key, idx)=>{
             return <option key={`status-${idx}`} defaultValue={(card?.status) === key} value={key}>
               {giftcardStatus[key]}
+            </option>
+          }) : item ?  Object.keys(orderItemStatus).map((key, idx)=>{
+            return <option key={`status-${idx}`} defaultValue={(card?.status) === key} value={key}>
+              {orderItemStatus[key]}
             </option>
           }) : transactionType[param.type] === transactionType.wallets ? Object.keys(walletStatus).map((key, idx)=>{
             return <option key={`status-${idx}`} defaultValue={(card?.status) === key} value={key}>
