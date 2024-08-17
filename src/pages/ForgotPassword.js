@@ -43,7 +43,7 @@ const ForgotPassword = () => {
                   label="Email"
                   name="verifyEmail"
                   type="email"
-                  placeholder="john@doe.com"
+                  placeholder="Enter email"
                 />
                 <Error errorName={errors.verifyEmail} />
 

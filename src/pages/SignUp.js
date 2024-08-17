@@ -54,7 +54,7 @@ const SignUp = () => {
                   label="Email"
                   name="email"
                   type="email"
-                  placeholder="john@doe.com"
+                  placeholder="Enter email"
                 />
                 <Error errorName={errors.email} />
 
