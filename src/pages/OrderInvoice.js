@@ -20,8 +20,7 @@ import Status from "components/table/Status";
 import OrderServices from "services/OrderServices";
 import Invoice from "components/invoice/Invoice";
 import Loading from "components/preloader/Loading";
-import logoDark from "assets/img/logo/logo-dark.svg";
-import logoLight from "assets/img/logo/logo-light.svg";
+import logoLight from "assets/img/logo/logo-light.png";
 import PageTitle from "components/Typography/PageTitle";
 import InvoiceForDownload from "components/invoice/InvoiceForDownload";
 import SettingServices from "services/SettingServices";
@@ -81,9 +80,15 @@ const OrderInvoice = () => {
               <div className="lg:text-right text-left">
                 <h2 className="lg:flex lg:justify-end text-lg font-serif font-semibold mt-4 lg:mt-0 lg:ml-0 md:mt-0">
                   {mode === "dark" ? (
-                    <img src={logoLight} alt="Shop Wanneka" width="110" />
+                    <div className="flex items-center">
+                      <img src={logoLight} alt="Shop Wanneka" width="50" className=" mr-3" />
+                      <b className="text-xl">Shop Wanneka</b>
+                    </div>
                   ) : (
-                    <img src={logoDark} alt="Shop Wanneka" width="110" />
+                    <div className="flex items-center">
+                      <img src={logoLight} alt="Shop Wanneka" width="50" className=" mr-3" />
+                      <b className="text-xl">Shop Wanneka</b>
+                    </div>
                   )}
                 </h2>
                 <div className="flex flex-col text-sm text-gray-500 dark:text-gray-400 mt-2">

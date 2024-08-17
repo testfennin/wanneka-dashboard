@@ -1,10 +1,13 @@
 import { convertDate, convertTime } from 'components/common/DateConversion';
 import SupportChat from 'components/support/supportChat'
 import React, { useEffect, useRef, useState } from 'react'
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import styled from 'styled-components'
 import axiosInstance from 'utils/axios';
 
+
 function Support() {
+    const history = useHistory();
     const [customersData, setCustomersData] = useState({})
     const [activeUser, setActiveUser] = useState(null);    
     const fetchUserChat = async (url) => {
@@ -21,6 +24,7 @@ function Support() {
             fetchUserChat()
         }
     },[activeUser])
+
 
     const [customers, setCustomers] = useState([])
     useEffect(()=>{
@@ -106,8 +110,9 @@ function Support() {
                     customers?.map((customer, idx, arr)=>{
                         if(idx === customers.length-1){
                             return <div ref={lastItemRef} key={`customer-chat-${idx}`} onClick={()=>{
+                                history.push(`/support/${customer?.room_id}`)
                                 setActiveUser(customer);
-                                setSearch(false)
+                                setSearch(false);
                             }} className={`w-full flex items-center justify-between py-3 px-2 dark:hover:bg-gray-400 border-b dark:border-gray-500 ${activeUser?.room_id === customer?.room_id ? `dark:bg-gray-400 bg-gray-200 dark:text-black`:`hover:bg-gray-100 hover:text-black`} cursor-pointer`}>
                                 <section className="flex items-center">
                                     <aside className="w-10 h-10 min-w-10 flex items-center justify-center rounded-full mr-3 border overflow-hidden">
@@ -132,8 +137,9 @@ function Support() {
                             </div>
                         }
                         return <div key={`customer-chat-${idx}`} onClick={()=>{
+                                history.push(`/support/${customer?.room_id}`)
                                 setActiveUser(customer);
-                                setSearch(false)
+                                setSearch(false);
                             }} className={`w-full flex items-center justify-between py-3 px-2 dark:hover:bg-gray-400 border-b dark:border-gray-500 ${activeUser?.room_id === customer?.room_id ? `dark:bg-gray-400 bg-gray-200 dark:text-black`:`hover:bg-gray-100 hover:text-black`} cursor-pointer`}>
                                 <section className="flex items-center">
                                     <aside className="w-10 h-10 min-w-10 flex items-center justify-center rounded-full mr-3 border overflow-hidden">
@@ -164,7 +170,7 @@ function Support() {
             </CustomerList>
             <ChatBoard className='flex items-center justify-center h-full p-4'>
                 {
-                    activeUser ? <SupportChat user={activeUser} refetch={fetchUserChat}/> : <b className="text-2xl">Select a chat</b>
+                    activeUser ? <SupportChat user={activeUser} customers={customers} refetch={fetchUserChat}/> : <b className="text-2xl">Select a chat</b>
                 }
             </ChatBoard>
         </ChatSection>

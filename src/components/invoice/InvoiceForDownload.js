@@ -275,7 +275,7 @@ const InvoiceForDownload = ({ data, currency, globalSetting }) => {
     <>
       <Document>
         <Page size="A4" style={styles.page}>
-          <View style={styles.invoiceFirst}>
+          <View style={{...styles.invoiceFirst, justifyContent: 'space-between'}}>
             <View style={styles.invoiceDiv}>
               <Text
                 style={{
@@ -329,21 +329,18 @@ const InvoiceForDownload = ({ data, currency, globalSetting }) => {
               )}
             </View>
 
-            <View style={styles.topBg}>
-              <Text
-                style={{
-                  width: "100%",
-                  marginRight: "62%",
-                  textAlign: "right",
-                }}
-              >
-                <Image
-                  src={logoDark}
-                  alt="Shop Wanneka"
-                  style={{
-                    width: 80,
-                  }}
-                />
+            <View style={{display: 'flex', flexDirection:'column', alignItems: 'flex-end', paddingTop: '15px'}}>
+              <Text style={{display: 'flex', flexDirection: 'row', alignItems: 'center', flexWrap: 'nowrap'}}>
+                  <Image
+                    src={logoDark}
+                    alt="Shop Wanneka"
+                    style={{
+                      width: 40,
+                    }}
+                  />
+                <Text style={{fontWeight: 'bold', marginLeft: '5px', fontSize: '15px'}}>
+                  Shop Wanneka
+                </Text>
               </Text>
 
               <Text style={styles.topAddress}>{globalSetting?.shop_name}</Text>

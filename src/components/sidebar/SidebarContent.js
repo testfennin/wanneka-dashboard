@@ -3,8 +3,7 @@ import { NavLink, Route } from "react-router-dom";
 import Cookies from "js-cookie";
 import { Button, WindmillContext } from "@windmill/react-ui";
 import { IoLogOutOutline } from "react-icons/io5";
-import logoDark from "assets/img/logo/logo-dark.svg";
-import logoLight from "assets/img/logo/logo-light.svg";
+import logoLight from "assets/img/logo/logo-light.png";
 
 import sidebar from "routes/sidebar";
 import { AdminContext } from "context/AdminContext";
@@ -26,9 +25,15 @@ const SidebarContent = () => {
     <div className="py-4 text-gray-500 dark:text-gray-400">
       <a className=" text-gray-900 dark:text-gray-200" href="/dashboard">
         {mode === "dark" ? (
-          <img src={logoLight} alt="Shop Wanneka" width="135" className="pl-6" />
+          <div className="flex items-center">
+            <img src={logoLight} alt="Shop Wanneka" width="50" className="ml-6 mr-3" />
+            <b className="text-xl">Shop Wanneka</b>
+          </div>
         ) : (
-          <img src={logoDark} alt="Shop Wanneka" width="135" className="pl-6" />
+          <div className="flex items-center">
+            <img src={logoLight} alt="Shop Wanneka" width="50" className="ml-6 mr-3" />
+            <b className="text-xl">Shop Wanneka</b>
+          </div>
         )}
       </a>
       <ul className="mt-8">

@@ -102,7 +102,7 @@ const routes = [
     component: OrderInvoice,
   },
   {
-    path: "/support/:customer?",
+    path: "/support/:room?",
     component: Support,
   },
   {

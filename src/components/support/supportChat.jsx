@@ -3,15 +3,28 @@ import styled from 'styled-components'
 import { IoIosSend } from "react-icons/io";
 import { socketBaseUrl } from 'services/AdminServices';
 import { convertDate, convertTime } from 'components/common/DateConversion';
+import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
 function SupportChat({user, refetch}) {
+    let param = useParams()
+    let [url, setUrl] = useState(`${socketBaseUrl}/ws/chat/${param.room}/?admin_pass=admin`)
+    let socket = useRef(new WebSocket(url));
     const [messages, setmessages] = useState([])
     const sendBtn = useRef(null)
     const inputRef = useRef(null)
+
     
     useEffect(()=>{
+        socket.current.close();
+        setmessages([])
         setmessages(user?.messages)
-    },[user])
+        if(param.room){
+            setUrl(`${socketBaseUrl}/ws/chat/${param.room}/?admin_pass=admin`)
+        }else{
+            setUrl(`${socketBaseUrl}/ws/chat/${user.room_id}/?admin_pass=admin`)
+        }
+        // eslint-disable-next-line
+    },[user.room_id, param.room])
 
     useEffect(()=>{
         let board = document.getElementById('messageBorder')
@@ -20,21 +33,19 @@ function SupportChat({user, refetch}) {
         }
     },[messages])
     
-    let url = `${socketBaseUrl}/ws/chat/${user.room_id}/?admin_pass=admin`
-    const socket = new WebSocket(url);
     useEffect(()=>{
-        console.log(user.room_id)
         const connectSocker = () => {
-            socket.addEventListener('open', (event) => {
+            socket.current = new WebSocket(url);
+            socket.current.addEventListener('open', (event) => {
                 console.log('Connected to server.')
             });
-            socket.addEventListener('close', (event) => {
+            socket.current.addEventListener('close', (event) => {
                 console.log('Connection closed.');
                 // socket.close();
             });
             
-            socket.onmessage = (event) => {
-                console.log('request sent')
+            socket.current.onmessage = (event) => {
+                console.log(url)
                 setmessages(prev=>{
                     return [...prev, JSON.parse(event.data)]
                 });
@@ -52,7 +63,7 @@ function SupportChat({user, refetch}) {
                         "is_image": false,
                         "image_url": ""
                 }
-                socket.send(JSON.stringify(data))
+                socket.current.send(JSON.stringify(data))
                 inputRef.current.value = '';
             }
         }
@@ -65,7 +76,9 @@ function SupportChat({user, refetch}) {
             })
         }
         
-        connectSocker();
+        setTimeout(()=>{
+            connectSocker();
+        },200)
         return () => {
             // socket.close()
         }
