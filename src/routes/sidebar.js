@@ -1,7 +1,6 @@
 import {
   FiGrid,
   FiUsers,
-  FiUser,
   FiCompass,
   FiSettings,
   FiSlack,
@@ -80,11 +79,11 @@ const sidebar = [
     name: "Orders",
   },
 
-  {
-    path: "/our-staff",
-    icon: FiUser,
-    name: "OurStaff",
-  },
+  // {
+  //   path: "/our-staff",
+  //   icon: FiUser,
+  //   name: "OurStaff",
+  // },
 
   {
     path: "/support",

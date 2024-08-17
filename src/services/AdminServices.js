@@ -2,6 +2,7 @@ import requests from "./httpService";
 
 export const baseUrl = `https://wanneka-ecommerce-api-production.up.railway.app/api/admins`;
 export const socketBaseUrl = `wss://wanneka-ecommerce-api-production.up.railway.app`;
+// export const socketBaseUrl = `wss://5ff1-154-161-17-36.ngrok-free.app`;
 export const userBaseUrl = 'https://wanneka-ecommerce-api-production.up.railway.app/api/ecommerce'
 
 const AdminServices = {
