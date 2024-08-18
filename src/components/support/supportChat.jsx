@@ -7,8 +7,7 @@ import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
 function SupportChat({user, refetch}) {
     let param = useParams()
-    let [url, setUrl] = useState(`${socketBaseUrl}/ws/chat/${param.room}/?admin_pass=admin`)
-    let socket = useRef(new WebSocket(url));
+    let socket = useRef(new WebSocket(`${socketBaseUrl}/ws/chat/${param.room}/?admin_pass=admin`));
     const [messages, setmessages] = useState([])
     const sendBtn = useRef(null)
     const inputRef = useRef(null)
@@ -18,11 +17,6 @@ function SupportChat({user, refetch}) {
         socket.current.close();
         setmessages([])
         setmessages(user?.messages)
-        if(param.room){
-            setUrl(`${socketBaseUrl}/ws/chat/${param.room}/?admin_pass=admin`)
-        }else{
-            setUrl(`${socketBaseUrl}/ws/chat/${user.room_id}/?admin_pass=admin`)
-        }
         // eslint-disable-next-line
     },[user.room_id, param.room])
 
@@ -35,7 +29,7 @@ function SupportChat({user, refetch}) {
     
     useEffect(()=>{
         const connectSocker = () => {
-            socket.current = new WebSocket(url);
+            socket.current = new WebSocket(`${socketBaseUrl}/ws/chat/${param.room}/?admin_pass=admin`);
             socket.current.addEventListener('open', (event) => {
                 console.log('Connected to server.')
             });
@@ -45,7 +39,6 @@ function SupportChat({user, refetch}) {
             });
             
             socket.current.onmessage = (event) => {
-                console.log(url)
                 setmessages(prev=>{
                     return [...prev, JSON.parse(event.data)]
                 });
