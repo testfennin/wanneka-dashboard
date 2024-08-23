@@ -1,5 +1,5 @@
 {
-  "name": "Shop Wanneka-admin",
+  "name": "shop-wanneka-admin",
   "version": "0.1.0",
   "description": "this is Shop Wanneka-admin built with react.js and tailwindcss",
   "private": true,
@@ -91,6 +91,7 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "autoprefixer": "^9.8.8",
     "cross-env": "^7.0.2",
     "cssnano": "4.1.10",
